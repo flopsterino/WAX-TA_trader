@@ -6,7 +6,9 @@
     <title>WAX TA Trading Bot</title>
     <!-- 1. WAXJS - Pointing to your GitHub repo version -->
     <script src="https://raw.githubusercontent.com/flopsterino/WAX-TA_trader/main/waxjs.js"></script>
-    <!-- 2. Technical Analysis Library (for RSI, etc.) -->
+    <!-- 2. Polyfill for regeneratorRuntime (required by TA lib) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js"></script>
+    <!-- 3. Technical Analysis Library (for RSI, etc.) -->
     <script src="https://cdn.jsdelivr.net/npm/technicalindicators@3.1.0/dist/browser.js"></script>
 
     <style>
