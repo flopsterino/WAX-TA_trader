@@ -14,10 +14,9 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <h1>WAX TA Trading Bot</h1>
-
+        
         <div class="alert alert-critical" role="alert">
             <p><strong>High Risk: Use at Your Own Risk</strong></p>
             <p>This is an educational tool. Automated trading is extremely risky and can lead to a total loss of funds. You are solely responsible for your actions. A 0.1% fee on all sell trades is sent to `qu.ug.wam`.</p>
@@ -25,12 +24,10 @@
 
         <div class="app-section">
             <h2>Step 1: Connect & Status</h2>
-            <button id="login-btn" class="primary">
-                Login with WAX Wallet
-            </button>
+            <button id="login-btn" class="primary"> Login with WAX Wallet </button>
             <div class="status-grid">
                 <div class="status-item">
-                    <span class="label">Wallet:</span>
+                    <span class="label">Wallet:</span> 
                     <strong id="user-account" class="value">Not Logged In</strong>
                 </div>
                 <div class="status-item">
@@ -45,48 +42,22 @@
 
         <div class="app-section">
             <h2>Step 2: Configure Tokens</h2>
-            
-            <fieldset>
-                <legend>Token A (The token you want to trade)</legend>
-                <div class="form-grid form-grid-cols-3">
-                    <div class="form-group">
-                        <label for="token-a-symbol">Symbol</label>
-                        <input type="text" id="token-a-symbol" placeholder="e.g., TLM">
-                    </div>
-                    <div class="form-group">
-                        <label for="token-a-contract">Contract</label>
-                        <input type="text" id="token-a-contract" placeholder="e.g., alien.worlds">
-                    </div>
-                    <div class="form-group">
-                        <label for="token-a-decimals">Decimals</label>
-                        <input type="number" id="token-a-decimals" value="4">
-                    </div>
+            <div class="form-grid form-grid-cols-2">
+                <div class="form-group">
+                    <label for="select-token-a">Token A (The token you want to trade)</label>
+                    <select id="select-token-a">
+                        </select>
                 </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Token B (e.g., WAX)</legend>
-                <div class="form-grid form-grid-cols-3">
-                    <div class="form-group">
-                        <label for="token-b-symbol">Symbol</label>
-                        <input type="text" id="token-b-symbol" placeholder="e.g., WAX" value="WAX">
-                    </div>
-                    <div class="form-group">
-                        <label for="token-b-contract">Contract</label>
-                        <input type="text" id="token-b-contract" placeholder="e.g., eosio.token" value="eosio.token">
-                    </div>
-                    <div class="form-group">
-                        <label for="token-b-decimals">Decimals</label>
-                        <input type="number" id="token-b-decimals" value="8">
-                    </div>
+                <div class="form-group">
+                    <label for="select-token-b">Token B (The token you spend/receive, e.g., WAX)</label>
+                    <select id="select-token-b">
+                        </select>
                 </div>
-            </fieldset>
-
             </div>
-        
+            <button id="add-token-btn" class="primary" style="margin-top: 1rem;">Add New Token</button>
+        </div>
         <div class="app-section">
             <h2>Step 3: Define Strategy</h2>
-            
             <div class="form-grid form-grid-cols-2">
                 <div class="form-group">
                     <label for="strategy-select">Trading Strategy</label>
@@ -111,36 +82,24 @@
 
             <div id="rsi-settings" class="strategy-settings form-grid form-grid-cols-2" style="margin-top: 1rem;">
                 <div class="form-group">
-                    <label for="rsi-buy">
-                        Buy Token A when 14-period RSI is below:
-                        <span class="default-text">(Default: 30)</span>
-                    </label>
+                    <label for="rsi-buy"> Buy Token A when 14-period RSI is below: <span class="default-text">(Default: 30)</span> </label>
                     <input type="number" id="rsi-buy" value="30">
                 </div>
                 <div class="form-group">
-                    <label for="rsi-sell">
-                        Sell Token A when 14-period RSI is above:
-                        <span class="default-text">(Default: 70)</span>
-                    </label>
+                    <label for="rsi-sell"> Sell Token A when 14-period RSI is above: <span class="default-text">(Default: 70)</span> </label>
                     <input type="number" id="rsi-sell" value="70">
                 </div>
             </div>
-
             <div id="price-range-settings" class="strategy-settings hidden form-grid form-grid-cols-2" style="margin-top: 1rem;">
                 <div class="form-group">
-                    <label for="price-lower">
-                        Lower Buy Price (in Token B)
-                    </label>
+                    <label for="price-lower"> Lower Buy Price (in Token B) </label>
                     <input type="number" id="price-lower" placeholder="e.g., 0.05">
                 </div>
                 <div class="form-group">
-                    <label for="price-upper">
-                        Upper Sell Price (in Token B)
-                    </label>
+                    <label for="price-upper"> Upper Sell Price (in Token B) </label>
                     <input type="number" id="price-upper" placeholder="e.g., 0.10">
                 </div>
             </div>
-
             <hr>
             <div class="form-grid form-grid-cols-2">
                 <div class="form-group">
@@ -152,28 +111,21 @@
                     <input type="number" id="trade-amount-b" value="10">
                 </div>
             </div>
-
             <div class="form-group" style="margin-top: 1rem;">
                 <label for="dex-contract">DEX Router Contract (Alcor is default)</label>
                 <input type="text" id="dex-contract" value="alcor.swap">
-                <p class="note">
-                    Note: The <code>alcor.swap</code> router automatically uses both Liquidity Pools (LPs) and the spot market to find the best trade price.
-                </p>
+                <p class="note"> Note: The <code>alcor.swap</code> router automatically uses both Liquidity Pools (LPs) and the spot market to find the best trade price. </p>
             </div>
         </div>
 
         <div class="app-section">
             <h2>Step 4: Control Panel</h2>
             <div class="button-grid">
-                <button id="start-btn" class="start">
-                    Start Bot
-                </button>
-                <button id="stop-btn" class="stop" disabled>
-                    Stop Bot
-                </button>
+                <button id="start-btn" class="start"> Start Bot </button>
+                <button id="stop-btn" class="stop" disabled> Stop Bot </button>
             </div>
             <div class="bot-status-container">
-                <span style="color: var(--text-secondary);">Status:</span>
+                <span style="color: var(--text-secondary);">Status:</span> 
                 <strong id="bot-status" class="stopped">STOPPED</strong>
             </div>
         </div>
@@ -184,215 +136,437 @@
                 <p class="log-idle">Bot is idle. Please log in, configure settings, and press Start.</p>
             </div>
         </div>
+    </div> 
 
-    </div> <div id="share-modal" class="modal-overlay">
+    <div id="share-modal" class="modal-overlay">
         <div class="modal-content">
             <button id="close-share-modal-btn" class="modal-close-btn">&times;</button>
             <h2>My Trading Bot PnL</h2>
-            
             <div class="modal-summary">
-                <div class="modal-summary-item">
-                    <span class="label">Wallet:</span>
-                    <span id="share-wallet" class="value">...</span>
-                </div>
-                <div class="modal-summary-item">
-                    <span class="label">Total Spent (B):</span>
-                    <span id="share-spent" class="value">0.00</span>
-                </div>
-                <div class="modal-summary-item">
-                    <span class="label">Total Received (B):</span>
-                    <span id="share-received" class="value">0.00</span>
-                </div>
+                <div class="modal-summary-item"><span class="label">Wallet:</span><span id="share-wallet" class="value">...</span></div>
+                <div class="modal-summary-item"><span class="label">Total Spent (B):</span><span id="share-spent" class="value">0.00</span></div>
+                <div class="modal-summary-item"><span class="label">Total Received (B):</span><span id="share-received" class="value">0.00</span></div>
                 <hr>
-                <div class="modal-summary-item modal-summary-total">
-                    <span class="label">Net PnL:</span>
-                    <span id="share-pnl" class="value neutral">0.00</span>
-                </div>
+                <div class="modal-summary-item modal-summary-total"><span class="label">Net PnL:</span><span id="share-pnl" class="value neutral">0.00</span></div>
             </div>
-
-            <textarea id="share-text"></textarea> <button id="copy-share-btn">
-                Copy Sharable Text
-            </button>
+            <textarea id="share-text"></textarea> 
+            <button id="copy-share-btn"> Copy Sharable Text </button>
         </div>
     </div>
 
-
+    <div id="add-token-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-add-token-modal-btn" class="modal-close-btn">&times;</button>
+            <h2>Add New Token</h2>
+            <div class="form-grid" style="gap: 1.5rem;">
+                 <div class="form-group">
+                    <label for="modal-token-symbol">Symbol (e.g., TLM)</label>
+                    <input type="text" id="modal-token-symbol" placeholder="TLM">
+                </div>
+                <div class="form-group">
+                    <label for="modal-token-contract">Contract (e.g., alien.worlds)</label>
+                    <input type="text" id="modal-token-contract" placeholder="alien.worlds">
+                </div>
+                <div class="form-group">
+                    <label for="modal-token-decimals">Decimals (e.g., 4)</label>
+                    <input type="number" id="modal-token-decimals" placeholder="4">
+                </div>
+            </div>
+            <button id="save-token-btn" class="primary" style="margin-top: 1.5rem;">Save Token</button>
+        </div>
+    </div>
     <script>
         // --- Global Variables ---
         let wax;
         let userAccount = null;
         let botInterval = null;
         let isBotRunning = false;
-        let lastPrices = []; // Store prices for PnL estimation
+        let lastPrices = []; 
         let pnlData = { totalSpentTokenB: 0, totalReceivedTokenB: 0, pnl: 0 };
-        
-        // NEW: Store market info including type
-        let currentMarket = { id: null, type: null }; // type can be 'swap' or 'spot'
+        let currentMarket = { id: null, type: null }; 
         let marketConfig = { baseContract: null, quoteContract: null, isInverted: false };
+        let tw = null; 
         
-        let tw = null; // Trendyways library
-        
+        // [ --- NEW: Token List --- ]
+        let tokenList = [];
+        const DEFAULT_TOKENS = [
+            { symbol: "WAX", contract: "eosio.token", decimals: 8 },
+            { symbol: "TLM", contract: "alien.worlds", decimals: 4 },
+            { symbol: "AETHER", contract: "aether.rplanet", decimals: 4 }
+        ];
+
         const WAX_RPC_ENDPOINT = 'https://wax.greymass.com';
         const FEE_RECEIVER = 'qu.ug.wam';
-        const FEE_PERCENT = 0.001; // 0.1%
+        const FEE_PERCENT = 0.001; 
         const ALCOR_API = 'https://wax.alcor.exchange/api/v2';
-
 
         // --- DOM Elements ---
         let loginBtn, userAccountDisplay, startBtn, stopBtn, botStatusDisplay, logOutput, pnlDisplay;
         let shareModal, sharePnlBtn, closeShareModalBtn, shareWallet, shareSpent, shareReceived, sharePnl, copyShareBtn, shareText;
-        let tokenASymbol, tokenAContract, tokenADecimals, tokenBSymbol, tokenBContract, tokenBDecimals;
+        
+        // [ --- MODIFIED: DOM Elements --- ]
+        // Removed old token input variables
+        let selectTokenA, selectTokenB, addTokenBtn; // New selectors
+        let addTokenModal, closeAddTokenModalBtn, saveTokenBtn, modalTokenSymbol, modalTokenContract, modalTokenDecimals; // New modal elements
+        
         let timeframeSelect, dexContract, tradeAmountA, tradeAmountB;
         let strategySelect, rsiSettings, priceRangeSettings, rsiBuy, rsiSell, priceLower, priceUpper;
 
         // --- Assign DOM Elements ---
-        function assignDomElements() { /* ... content unchanged ... */
-            loginBtn = document.getElementById('login-btn'); userAccountDisplay = document.getElementById('user-account'); startBtn = document.getElementById('start-btn'); stopBtn = document.getElementById('stop-btn'); botStatusDisplay = document.getElementById('bot-status'); logOutput = document.getElementById('log-output'); pnlDisplay = document.getElementById('pnl-display'); shareModal = document.getElementById('share-modal'); sharePnlBtn = document.getElementById('share-pnl-btn'); closeShareModalBtn = document.getElementById('close-share-modal-btn'); shareWallet = document.getElementById('share-wallet'); shareSpent = document.getElementById('share-spent'); shareReceived = document.getElementById('share-received'); sharePnl = document.getElementById('share-pnl'); copyShareBtn = document.getElementById('copy-share-btn'); shareText = document.getElementById('share-text'); tokenASymbol = document.getElementById('token-a-symbol'); tokenAContract = document.getElementById('token-a-contract'); tokenADecimals = document.getElementById('token-a-decimals'); tokenBSymbol = document.getElementById('token-b-symbol'); tokenBContract = document.getElementById('token-b-contract'); tokenBDecimals = document.getElementById('token-b-decimals'); timeframeSelect = document.getElementById('timeframe-select'); dexContract = document.getElementById('dex-contract'); tradeAmountA = document.getElementById('trade-amount-a'); tradeAmountB = document.getElementById('trade-amount-b'); strategySelect = document.getElementById('strategy-select'); rsiSettings = document.getElementById('rsi-settings'); priceRangeSettings = document.getElementById('price-range-settings'); rsiBuy = document.getElementById('rsi-buy'); rsiSell = document.getElementById('rsi-sell'); priceLower = document.getElementById('price-lower'); priceUpper = document.getElementById('price-upper');
+        function assignDomElements() {
+            loginBtn = document.getElementById('login-btn'); 
+            userAccountDisplay = document.getElementById('user-account'); 
+            startBtn = document.getElementById('start-btn'); 
+            stopBtn = document.getElementById('stop-btn'); 
+            botStatusDisplay = document.getElementById('bot-status'); 
+            logOutput = document.getElementById('log-output'); 
+            pnlDisplay = document.getElementById('pnl-display'); 
+            shareModal = document.getElementById('share-modal'); 
+            sharePnlBtn = document.getElementById('share-pnl-btn'); 
+            closeShareModalBtn = document.getElementById('close-share-modal-btn'); 
+            shareWallet = document.getElementById('share-wallet'); 
+            shareSpent = document.getElementById('share-spent'); 
+            shareReceived = document.getElementById('share-received'); 
+            sharePnl = document.getElementById('share-pnl'); 
+            copyShareBtn = document.getElementById('copy-share-btn'); 
+            shareText = document.getElementById('share-text'); 
+            
+            // [ --- MODIFIED: Assign Token Elements --- ]
+            selectTokenA = document.getElementById('select-token-a');
+            selectTokenB = document.getElementById('select-token-b');
+            addTokenBtn = document.getElementById('add-token-btn');
+            addTokenModal = document.getElementById('add-token-modal');
+            closeAddTokenModalBtn = document.getElementById('close-add-token-modal-btn');
+            saveTokenBtn = document.getElementById('save-token-btn');
+            modalTokenSymbol = document.getElementById('modal-token-symbol');
+            modalTokenContract = document.getElementById('modal-token-contract');
+            modalTokenDecimals = document.getElementById('modal-token-decimals');
+            // [ --- END MODIFIED --- ]
+
+            timeframeSelect = document.getElementById('timeframe-select'); 
+            dexContract = document.getElementById('dex-contract'); 
+            tradeAmountA = document.getElementById('trade-amount-a'); 
+            tradeAmountB = document.getElementById('trade-amount-b'); 
+            strategySelect = document.getElementById('strategy-select'); 
+            rsiSettings = document.getElementById('rsi-settings'); 
+            priceRangeSettings = document.getElementById('price-range-settings'); 
+            rsiBuy = document.getElementById('rsi-buy'); 
+            rsiSell = document.getElementById('rsi-sell'); 
+            priceLower = document.getElementById('price-lower'); 
+            priceUpper = document.getElementById('price-upper');
         }
 
         // --- PnL Functions ---
-        function loadPnlFromStorage() { /* ... content unchanged ... */ 
-            const savedData = localStorage.getItem('waxTraderPnl'); if (savedData) { pnlData = JSON.parse(savedData); logMessage("Loaded PnL data from storage.", "system"); } else { logMessage("No PnL data found, starting fresh.", "system"); } updatePnlDisplay(); 
-        }
-        function savePnlToStorage() { /* ... content unchanged ... */ 
-            localStorage.setItem('waxTraderPnl', JSON.stringify(pnlData)); 
-        }
-        function updatePnl(direction, amountB) { /* ... content unchanged ... */ 
-            if (direction === 'buy') { pnlData.totalSpentTokenB += amountB; } else if (direction === 'sell') { pnlData.totalReceivedTokenB += amountB; } pnlData.pnl = pnlData.totalReceivedTokenB - pnlData.totalSpentTokenB; savePnlToStorage(); updatePnlDisplay(); logMessage(`PnL updated: ${pnlData.pnl.toFixed(4)}`, "success"); 
-        }
-        function updatePnlDisplay() { /* ... content unchanged ... */ 
-            const pnlValue = pnlData.pnl || 0; const tokenSymbol = tokenBSymbol.value.trim().toUpperCase() || 'Token B'; pnlDisplay.textContent = `${pnlValue.toFixed(4)} ${tokenSymbol}`; pnlDisplay.className = pnlValue > 0 ? "value positive" : pnlValue < 0 ? "value negative" : "value neutral"; 
+        function loadPnlFromStorage() { /* ... content unchanged ... */ const savedData = localStorage.getItem('waxTraderPnl'); if (savedData) { pnlData = JSON.parse(savedData); logMessage("Loaded PnL data from storage.", "system"); } else { logMessage("No PnL data found, starting fresh.", "system"); } updatePnlDisplay(); }
+        function savePnlToStorage() { /* ... content unchanged ... */ localStorage.setItem('waxTraderPnl', JSON.stringify(pnlData)); }
+        function updatePnl(direction, amountB) { /* ... content unchanged ... */ if (direction === 'buy') { pnlData.totalSpentTokenB += amountB; } else if (direction === 'sell') { pnlData.totalReceivedTokenB += amountB; } pnlData.pnl = pnlData.totalReceivedTokenB - pnlData.totalSpentTokenB; savePnlToStorage(); updatePnlDisplay(); logMessage(`PnL updated: ${pnlData.pnl.toFixed(4)}`, "success"); }
+        
+        // [ --- MODIFIED: Uses new token selector --- ]
+        function updatePnlDisplay() {
+            const pnlValue = pnlData.pnl || 0;
+            const tokenB = getSelectedTokenConfig('select-token-b');
+            const tokenSymbol = tokenB ? tokenB.symbol.toUpperCase() : 'Token B'; // Get symbol from selected token
+            
+            pnlDisplay.textContent = `${pnlValue.toFixed(4)} ${tokenSymbol}`;
+            pnlDisplay.className = pnlValue > 0 ? "value positive" : pnlValue < 0 ? "value negative" : "value neutral";
         }
 
         // --- Share Modal Functions ---
-        function openShareModal() { /* ... content unchanged ... */ 
-            const tokenSymbol = tokenBSymbol.value.trim().toUpperCase() || 'Token B'; const pnlValue = pnlData.pnl || 0; shareWallet.textContent = userAccount || 'N/A'; shareSpent.textContent = `${pnlData.totalSpentTokenB.toFixed(4)} ${tokenSymbol}`; shareReceived.textContent = `${pnlData.totalReceivedTokenB.toFixed(4)} ${tokenSymbol}`; sharePnl.textContent = `${pnlValue.toFixed(4)} ${tokenSymbol}`; sharePnl.className = pnlValue > 0 ? "value positive" : pnlValue < 0 ? "value negative" : "value neutral"; const textToCopy = `📈 My WAX TA Bot Report 📈\n-------------------------\nWallet: ${userAccount}\nNet PnL: ${pnlValue.toFixed(4)} ${tokenSymbol}\n(Spent: ${pnlData.totalSpentTokenB.toFixed(4)} | Received: ${pnlData.totalReceivedTokenB.toFixed(4)})\n-------------------------\nBot by: qu.ug.wam`; shareText.value = textToCopy.trim(); shareModal.classList.add('visible'); 
+        // [ --- MODIFIED: Uses new token selector --- ]
+        function openShareModal() {
+            const tokenB = getSelectedTokenConfig('select-token-b');
+            const tokenSymbol = tokenB ? tokenB.symbol.toUpperCase() : 'Token B'; // Get symbol from selected token
+            const pnlValue = pnlData.pnl || 0; 
+            
+            shareWallet.textContent = userAccount || 'N/A'; 
+            shareSpent.textContent = `${pnlData.totalSpentTokenB.toFixed(4)} ${tokenSymbol}`; 
+            shareReceived.textContent = `${pnlData.totalReceivedTokenB.toFixed(4)} ${tokenSymbol}`; 
+            sharePnl.textContent = `${pnlValue.toFixed(4)} ${tokenSymbol}`; 
+            sharePnl.className = pnlValue > 0 ? "value positive" : pnlValue < 0 ? "value negative" : "value neutral"; 
+            
+            const textToCopy = `📈 My WAX TA Bot Report 📈\n-------------------------\nWallet: ${userAccount}\nNet PnL: ${pnlValue.toFixed(4)} ${tokenSymbol}\n(Spent: ${pnlData.totalSpentTokenB.toFixed(4)} | Received: ${pnlData.totalReceivedTokenB.toFixed(4)})\n-------------------------\nBot by: qu.ug.wam`; 
+            shareText.value = textToCopy.trim(); 
+            shareModal.classList.add('visible'); 
         }
-        function closeShareModal() { /* ... content unchanged ... */ 
-            shareModal.classList.remove('visible'); 
-        }
-        function copyShareText() { /* ... content unchanged ... */ 
-            shareText.select(); shareText.setSelectionRange(0, 99999); try { document.execCommand('copy'); copyShareBtn.textContent = 'Copied!'; setTimeout(() => { copyShareBtn.textContent = 'Copy Sharable Text'; }, 2000); } catch (err) { logMessage('Failed to copy share text.', 'error'); } 
-        }
+        function closeShareModal() { /* ... content unchanged ... */ shareModal.classList.remove('visible'); }
+        function copyShareText() { /* ... content unchanged ... */ shareText.select(); shareText.setSelectionRange(0, 99999); try { document.execCommand('copy'); copyShareBtn.textContent = 'Copied!'; setTimeout(() => { copyShareBtn.textContent = 'Copy Sharable Text'; }, 2000); } catch (err) { logMessage('Failed to copy share text.', 'error'); } }
 
         // --- Core Functions ---
-        function logMessage(message, level = "info") { /* ... content unchanged ... */ 
-            if (!logOutput) { console.log(`[${level.toUpperCase()}] ${message}`); return; } const p = document.createElement('p'); const timestamp = new Date().toLocaleTimeString(); let levelClass = "log-info"; if (level === "error") levelClass = "log-error"; if (level === "success") levelClass = "log-success"; if (level === "warn") levelClass = "log-warn"; if (level === "system") levelClass = "log-system"; p.className = levelClass; p.innerHTML = `<span class="log-time">[${timestamp}]</span> ${message}`; const placeholder = logOutput.querySelector('.log-idle'); if (placeholder) placeholder.remove(); logOutput.prepend(p); 
-        }
-        function toggleStrategySettings() { /* ... content unchanged ... */ 
-            const selectedStrategy = strategySelect.value; rsiSettings.classList.toggle('hidden', selectedStrategy !== 'rsi'); priceRangeSettings.classList.toggle('hidden', selectedStrategy !== 'price-range'); 
-        }
+        function logMessage(message, level = "info") { /* ... content unchanged ... */ if (!logOutput) { console.log(`[${level.toUpperCase()}] ${message}`); return; } const p = document.createElement('p'); const timestamp = new Date().toLocaleTimeString(); let levelClass = "log-info"; if (level === "error") levelClass = "log-error"; if (level === "success") levelClass = "log-success"; if (level === "warn") levelClass = "log-warn"; if (level === "system") levelClass = "log-system"; p.className = levelClass; p.innerHTML = `<span class="log-time">[${timestamp}]</span> ${message}`; const placeholder = logOutput.querySelector('.log-idle'); if (placeholder) placeholder.remove(); logOutput.prepend(p); }
+        function toggleStrategySettings() { /* ... content unchanged ... */ const selectedStrategy = strategySelect.value; rsiSettings.classList.toggle('hidden', selectedStrategy !== 'rsi'); priceRangeSettings.classList.toggle('hidden', selectedStrategy !== 'price-range'); }
 
         // --- Initialization ---
-        window.addEventListener('load', () => { /* ... content unchanged ... */ 
-            assignDomElements(); logMessage("Page loaded. Waiting for required libraries...", "system"); waitForLibraries(); 
-        });
-        function waitForLibraries() { /* ... content unchanged ... */ 
-            let interval = setInterval(() => { if (typeof waxjs !== 'undefined' && typeof window.tw !== 'undefined') { clearInterval(interval); logMessage("Libraries loaded successfully.", "success"); initializeApp(); } }, 100); setTimeout(() => { clearInterval(interval); if (typeof waxjs === 'undefined' || typeof window.tw === 'undefined') { let errorMsg = "FATAL: Libraries failed to load after 10 seconds. "; if (typeof waxjs === 'undefined') errorMsg += "waxjs failed. "; if (typeof window.tw === 'undefined') errorMsg += "trendyways (tw) failed. "; logMessage(errorMsg + "Check script tags and file locations.", "error"); } }, 10000); 
-        }
-        function initializeApp() { /* ... content unchanged ... */ 
-            tw = window.tw; wax = new waxjs.WaxJS({ rpcEndpoint: WAX_RPC_ENDPOINT, tryAutoLogin: false }); loadPnlFromStorage(); loginBtn.addEventListener('click', login); startBtn.addEventListener('click', startBot); stopBtn.addEventListener('click', stopBot); sharePnlBtn.addEventListener('click', openShareModal); closeShareModalBtn.addEventListener('click', closeShareModal); copyShareBtn.addEventListener('click', copyShareText); strategySelect.addEventListener('change', toggleStrategySettings); shareModal.addEventListener('click', (e) => { if (e.target === shareModal) closeShareModal(); }); logMessage("App initialized. Please log in.", "system"); logMessage("Market verification disabled. Ensure token contracts are correct before starting.", "warn"); toggleStrategySettings(); 
+        window.addEventListener('load', () => { /* ... content unchanged ... */ assignDomElements(); logMessage("Page loaded. Waiting for required libraries...", "system"); waitForLibraries(); });
+        function waitForLibraries() { /* ... content unchanged ... */ let interval = setInterval(() => { if (typeof waxjs !== 'undefined' && typeof window.tw !== 'undefined') { clearInterval(interval); logMessage("Libraries loaded successfully.", "success"); initializeApp(); } }, 100); setTimeout(() => { clearInterval(interval); if (typeof waxjs === 'undefined' || typeof window.tw === 'undefined') { let errorMsg = "FATAL: Libraries failed to load after 10 seconds. "; if (typeof waxjs === 'undefined') errorMsg += "waxjs failed. "; if (typeof window.tw === 'undefined') errorMsg += "trendyways (tw) failed. "; logMessage(errorMsg + "Check script tags and file locations.", "error"); } }, 10000); }
+        
+        // [ --- MODIFIED: `initializeApp` --- ]
+        function initializeApp() {
+            tw = window.tw; 
+            wax = new waxjs.WaxJS({ rpcEndpoint: WAX_RPC_ENDPOINT, tryAutoLogin: false }); 
+            
+            loadPnlFromStorage();
+            loadTokenList(); // Load tokens from storage
+            
+            loginBtn.addEventListener('click', login); 
+            startBtn.addEventListener('click', startBot); 
+            stopBtn.addEventListener('click', stopBot); 
+            sharePnlBtn.addEventListener('click', openShareModal); 
+            closeShareModalBtn.addEventListener('click', closeShareModal); 
+            copyShareBtn.addEventListener('click', copyShareText); 
+            strategySelect.addEventListener('change', toggleStrategySettings); 
+            shareModal.addEventListener('click', (e) => { if (e.target === shareModal) closeShareModal(); }); 
+
+            // New listeners for token management
+            addTokenBtn.addEventListener('click', openAddTokenModal);
+            closeAddTokenModalBtn.addEventListener('click', closeAddTokenModal);
+            saveTokenBtn.addEventListener('click', saveNewToken);
+            addTokenModal.addEventListener('click', (e) => { if (e.target === addTokenModal) closeAddTokenModal(); });
+
+            // Update PnL display if token B is changed
+            selectTokenA.addEventListener('change', updatePnlDisplay);
+            selectTokenB.addEventListener('change', updatePnlDisplay);
+
+            logMessage("App initialized. Please log in.", "system");
+            toggleStrategySettings(); 
         }
 
         // --- Login ---
-        async function login() { /* ... content unchanged ... */ 
-            try { logMessage("Attempting login...", "system"); userAccount = await wax.login(); userAccountDisplay.textContent = userAccount; loginBtn.disabled = true; loginBtn.textContent = "Logged In"; logMessage(`Logged in as: ${userAccount}`, "success"); } catch (e) { logMessage(`Login failed: ${e.message}`, "error"); } 
+        async function login() { /* ... content unchanged ... */ try { logMessage("Attempting login...", "system"); userAccount = await wax.login(); userAccountDisplay.textContent = userAccount; loginBtn.disabled = true; loginBtn.textContent = "Logged In"; logMessage(`Logged in as: ${userAccount}`, "success"); } catch (e) { logMessage(`Login failed: ${e.message}`, "error"); } }
+
+
+        // [ --- NEW: Token Management Functions --- ]
+        
+        /**
+         * Loads the token list from localStorage or sets defaults.
+         */
+        function loadTokenList() {
+            const savedTokens = localStorage.getItem('waxTraderTokens');
+            if (savedTokens) {
+                tokenList = JSON.parse(savedTokens);
+                logMessage("Loaded token list from storage.", "system");
+            } else {
+                tokenList = [...DEFAULT_TOKENS];
+                logMessage("No token list found, loading defaults.", "system");
+                saveTokenList();
+            }
+            populateTokenDropdowns();
         }
+
+        /**
+         * Saves the current token list to localStorage.
+         */
+        function saveTokenList() {
+            localStorage.setItem('waxTraderTokens', JSON.stringify(tokenList));
+        }
+
+        /**
+         * Populates both Token A and Token B dropdowns from the global `tokenList`.
+         */
+        function populateTokenDropdowns() {
+            // Save currently selected values to try and restore them
+            const currentA = selectTokenA.value;
+            const currentB = selectTokenB.value;
+
+            selectTokenA.innerHTML = '';
+            selectTokenB.innerHTML = '';
+
+            if (tokenList.length === 0) {
+                const option = "<option value='-1'>Please add a token...</option>";
+                selectTokenA.innerHTML = option;
+                selectTokenB.innerHTML = option;
+                return;
+            }
+
+            tokenList.forEach((token, index) => {
+                const optionHTML = `<option value="${index}">${token.symbol.toUpperCase()} (${token.contract})</option>`;
+                selectTokenA.insertAdjacentHTML('beforeend', optionHTML);
+                selectTokenB.insertAdjacentHTML('beforeend', optionHTML);
+            });
+
+            // Restore previous selection if possible, otherwise set defaults
+            selectTokenA.value = (currentA && tokenList[currentA]) ? currentA : "1"; // Default to TLM (index 1)
+            selectTokenB.value = (currentB && tokenList[currentB])? currentB : "0"; // Default to WAX (index 0)
+            
+            updatePnlDisplay(); // Ensure PnL label is correct
+        }
+
+        /**
+         * Opens the "Add New Token" modal.
+         */
+        function openAddTokenModal() {
+            modalTokenSymbol.value = '';
+            modalTokenContract.value = '';
+            modalTokenDecimals.value = '';
+            addTokenModal.classList.add('visible');
+        }
+
+        /**
+         * Closes the "Add New Token" modal.
+         */
+        function closeAddTokenModal() {
+            addTokenModal.classList.remove('visible');
+        }
+
+        /**
+         * Saves the new token from the modal to the list.
+         */
+        function saveNewToken() {
+            const symbol = modalTokenSymbol.value.trim().toUpperCase();
+            const contract = modalTokenContract.value.trim().toLowerCase();
+            const decimals = parseInt(modalTokenDecimals.value);
+
+            if (!symbol || !contract || isNaN(decimals) || decimals < 0) {
+                logMessage("Invalid token details. Please fill all fields correctly.", "error");
+                return;
+            }
+
+            // Check for duplicates
+            const isDuplicate = tokenList.some(token => token.symbol === symbol && token.contract === contract);
+            if (isDuplicate) {
+                logMessage(`Token ${symbol}@${contract} is already in your list.`, "warn");
+                return;
+            }
+
+            tokenList.push({ symbol, contract, decimals });
+            saveTokenList();
+            populateTokenDropdowns();
+            logMessage(`Added new token: ${symbol}@${contract}`, "success");
+            closeAddTokenModal();
+        }
+
+        /**
+         * Helper function to get the full token config object from a <select> element.
+         * @param {string} elementId The ID of the <select> element ('select-token-a' or 'select-token-b')
+         * @returns {object|null} The token object {symbol, contract, decimals} or null if invalid.
+         */
+        function getSelectedTokenConfig(elementId) {
+            const selectEl = document.getElementById(elementId);
+            if (!selectEl) return null;
+            
+            const selectedIndex = parseInt(selectEl.value);
+            if (isNaN(selectedIndex) || selectedIndex < 0 || !tokenList[selectedIndex]) {
+                return null;
+            }
+            
+            return tokenList[selectedIndex];
+        }
+        
+        // [ --- END NEW TOKEN FUNCTIONS --- ]
+
 
         // --- Bot Control ---
-        async function startBot() { 
-            if (!userAccount) { logMessage("Please log in before starting the bot.", "error"); return; } 
-            if (isBotRunning) return; 
-            // Reset market info on each start
-            currentMarket = { id: null, type: null }; 
-            marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; 
-            logMessage("Bot starting... Running first check.", "system"); 
-            const successfulFirstRun = await runBotLogic(); 
-            if (successfulFirstRun) { 
-                isBotRunning = true; 
-                botStatusDisplay.textContent = "RUNNING"; 
-                botStatusDisplay.className = "running"; 
-                startBtn.disabled = true; 
-                stopBtn.disabled = false; 
-                logMessage("Bot started successfully!", "success"); 
-                const checkInterval = parseInt(timeframeSelect.value) * 60 * 1000; 
-                botInterval = setInterval(runBotLogic, Math.max(60000, checkInterval)); 
-            } else { 
-                logMessage("Bot failed to start. Check contracts, symbols, and Alcor API status.", "error"); 
-            } 
-        }
-        function stopBot() { 
-            if (!isBotRunning) return; 
-            isBotRunning = false; 
-            clearInterval(botInterval); 
-            // Clear market info on stop
-            currentMarket = { id: null, type: null }; 
-            marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; 
-            botStatusDisplay.textContent = "STOPPED"; 
-            botStatusDisplay.className = "stopped"; 
-            startBtn.disabled = false; 
-            stopBtn.disabled = true; 
-            logMessage("Bot stopped.", "system"); 
-        }
+        async function startBot() { /* ... content unchanged ... */ if (!userAccount) { logMessage("Please log in before starting the bot.", "error"); return; } if (isBotRunning) return; currentMarket = { id: null, type: null }; marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; logMessage("Bot starting... Running first check.", "system"); const successfulFirstRun = await runBotLogic(); if (successfulFirstRun) { isBotRunning = true; botStatusDisplay.textContent = "RUNNING"; botStatusDisplay.className = "running"; startBtn.disabled = true; stopBtn.disabled = false; logMessage("Bot started successfully!", "success"); const checkInterval = parseInt(timeframeSelect.value) * 60 * 1000; botInterval = setInterval(runBotLogic, Math.max(60000, checkInterval)); } else { logMessage("Bot failed to start. Check contracts, symbols, and Alcor API status.", "error"); } }
+        function stopBot() { /* ... content unchanged ... */ if (!isBotRunning) return; isBotRunning = false; clearInterval(botInterval); currentMarket = { id: null, type: null }; marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; botStatusDisplay.textContent = "STOPPED"; botStatusDisplay.className = "stopped"; startBtn.disabled = false; stopBtn.disabled = true; logMessage("Bot stopped.", "system"); }
 
         // --- Core Bot Logic ---
-        async function runBotLogic() { 
-             if (!isBotRunning && !userAccount) { return false; } 
-             logMessage("Running strategy check...", "info"); 
-             try { 
-                // 1. Ensure Market Info is found (uses new findMarketId)
-                if (!currentMarket.id || !currentMarket.type) {
-                    const marketInfo = await findMarketId(); // Returns { id, type } or null
-                    if (!marketInfo) {
-                        logMessage("Market could not be found or validated. Check token contracts.", "error");
-                        return isBotRunning; // Keep trying if running, fail start if not
-                    }
-                    currentMarket = marketInfo; // Store { id, type }
-                }
-
-                // 2. Get Current Price (uses new reliable function aware of type)
-                const currentPriceData = await getCurrentPrice(currentMarket.id, currentMarket.type); // Pass type
-                 if (!currentPriceData) {
-                    logMessage("Could not fetch current price.", "warn");
-                    return isBotRunning; // Keep trying if running, fail start if not
-                }
-                const currentPrice = currentPriceData.price; // Price of A in terms of B
-                logMessage(`Current price: 1 ${tokenASymbol.value.trim().toUpperCase()} = ${currentPrice.toFixed(8)} ${tokenBSymbol.value.trim().toUpperCase()}`, "info");
-                lastPrices = [{ close: currentPrice }]; // Store for PnL
-
-                // 3. Run selected strategy
+        // [ --- MODIFIED: Uses new token selectors --- ]
+        async function runBotLogic() {
+            if (!isBotRunning && !userAccount) { return false; } 
+            
+            const tokenA = getSelectedTokenConfig('select-token-a');
+            const tokenB = getSelectedTokenConfig('select-token-b');
+            if (!tokenA || !tokenB) { 
+                logMessage("Invalid tokens selected. Bot logic cannot run.", "warn"); 
+                return isBotRunning; // Return true if bot was already running, false if this was first run
+            }
+            
+            logMessage("Running strategy check...", "info"); 
+            
+            try { 
+                if (!currentMarket.id || !currentMarket.type) { 
+                    const marketInfo = await findMarketId(); 
+                    if (!marketInfo) { 
+                        logMessage("Market could not be found or validated. Check token contracts.", "error"); 
+                        return isBotRunning; 
+                    } 
+                    currentMarket = marketInfo; 
+                } 
+                
+                const currentPriceData = await getCurrentPrice(currentMarket.id, currentMarket.type); 
+                if (!currentPriceData) { 
+                    logMessage("Could not fetch current price.", "warn"); 
+                    return isBotRunning; 
+                } 
+                
+                const currentPrice = currentPriceData.price; 
+                logMessage(`Current price: 1 ${tokenA.symbol} = ${currentPrice.toFixed(8)} ${tokenB.symbol}`, "info"); 
+                lastPrices = [{ close: currentPrice }]; 
+                
                 const selectedStrategy = strategySelect.value; 
-                if (selectedStrategy === 'price-range') { /* ... unchanged ... */ 
-                    const lowerBuyPrice = parseFloat(priceLower.value); const upperSellPrice = parseFloat(priceUpper.value); if (isNaN(lowerBuyPrice) || isNaN(upperSellPrice) || lowerBuyPrice <= 0 || upperSellPrice <= 0) { logMessage("Price Range: Please set a valid lower and upper price.", "warn"); return true; } if (currentPrice <= lowerBuyPrice) { logMessage(`PRICE BUY TRIGGER! Price (${currentPrice.toFixed(8)}) <= ${lowerBuyPrice}.`, "success"); await executeSwap('buy'); } else if (currentPrice >= upperSellPrice) { logMessage(`PRICE SELL TRIGGER! Price (${currentPrice.toFixed(8)}) >= ${upperSellPrice}.`, "success"); await executeSwap('sell'); } else { logMessage(`Price Range: No trigger. Price is between ${lowerBuyPrice} and ${upperSellPrice}.`, "info"); } 
+                if (selectedStrategy === 'price-range') { 
+                    const lowerBuyPrice = parseFloat(priceLower.value); 
+                    const upperSellPrice = parseFloat(priceUpper.value); 
+                    if (isNaN(lowerBuyPrice) || isNaN(upperSellPrice) || lowerBuyPrice <= 0 || upperSellPrice <= 0) { 
+                        logMessage("Price Range: Please set a valid lower and upper price.", "warn"); 
+                        return true; 
+                    } 
+                    if (currentPrice <= lowerBuyPrice) { 
+                        logMessage(`PRICE BUY TRIGGER! Price (${currentPrice.toFixed(8)}) <= ${lowerBuyPrice}.`, "success"); 
+                        await executeSwap('buy'); 
+                    } else if (currentPrice >= upperSellPrice) { 
+                        logMessage(`PRICE SELL TRIGGER! Price (${currentPrice.toFixed(8)}) >= ${upperSellPrice}.`, "success"); 
+                        await executeSwap('sell'); 
+                    } else { 
+                        logMessage(`Price Range: No trigger. Price is between ${lowerBuyPrice} and ${upperSellPrice}.`, "info"); 
+                    } 
                 } else if (selectedStrategy === 'rsi') { 
-                    const prices = await getPriceHistory(currentMarket.id); // Pass ID just in case
+                    const prices = await getPriceHistory(currentMarket.id); 
                     if (!prices || prices.length < 14) { 
                         logMessage("RSI: Not enough historical data or history fetch failed. Skipping RSI check.", "warn"); 
-                    } else { /* ... RSI logic unchanged ... */ 
-                        const closePrices = prices.map(p => p.close); const rsiValues = tw.rsi(closePrices, 14); const currentRSI = rsiValues[rsiValues.length - 1]; logMessage(`Current RSI: ${currentRSI.toFixed(2)}`, "info"); const buyLevel = parseFloat(rsiBuy.value); const sellLevel = parseFloat(rsiSell.value); if (currentRSI <= buyLevel) { logMessage(`RSI BUY TRIGGER! RSI (${currentRSI.toFixed(2)}) <= ${buyLevel}.`, "success"); await executeSwap('buy'); } else if (currentRSI >= sellLevel) { logMessage(`RSI SELL TRIGGER! RSI (${currentRSI.toFixed(2)}) >= ${sellLevel}.`, "success"); await executeSwap('sell'); } else { logMessage(`RSI: No trigger. RSI is between ${buyLevel} and ${sellLevel}.`, "info"); } 
+                    } else { 
+                        const closePrices = prices.map(p => p.close); 
+                        const rsiValues = tw.rsi(closePrices, 14); 
+                        const currentRSI = rsiValues[rsiValues.length - 1]; 
+                        logMessage(`Current RSI: ${currentRSI.toFixed(2)}`, "info"); 
+                        const buyLevel = parseFloat(rsiBuy.value); 
+                        const sellLevel = parseFloat(rsiSell.value); 
+                        if (currentRSI <= buyLevel) { 
+                            logMessage(`RSI BUY TRIGGER! RSI (${currentRSI.toFixed(2)}) <= ${buyLevel}.`, "success"); 
+                            await executeSwap('buy'); 
+                        } else if (currentRSI >= sellLevel) { 
+                            logMessage(`RSI SELL TRIGGER! RSI (${currentRSI.toFixed(2)}) >= ${sellLevel}.`, "success"); 
+                            await executeSwap('sell'); 
+                        } else { 
+                            logMessage(`RSI: No trigger. RSI is between ${buyLevel} and ${sellLevel}.`, "info"); 
+                        } 
                     } 
                 } 
                 return true; 
-             } catch (e) { 
+            } catch (e) { 
                 logMessage(`Error in bot logic: ${e.message}`, "error"); 
-                // Reset market info on error
                 currentMarket = { id: null, type: null }; 
                 marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; 
                 return false; 
-             } 
+            } 
         }
         
         /**
-         * ROBUST: Finds market ID, prioritizing Swap Pools, rejecting ID 0.
-         * Returns { id: number, type: 'swap' | 'spot' } or null.
+         * [ --- MODIFIED: `findMarketId` --- ]
+         * Uses getSelectedTokenConfig() helper to get token data.
          */
         async function findMarketId() {
-            const tokenA = tokenAContract.value.trim().toLowerCase(); // Use lowercase
-            const tokenB = tokenBContract.value.trim().toLowerCase();
-            if (!tokenA || !tokenB) { logMessage("Token contracts cannot be empty.", "error"); return null; }
-            logMessage(`Searching for market ${tokenA} / ${tokenB}...`, "system");
+            // Get all details from the token selectors
+            const tokenA = getSelectedTokenConfig('select-token-a');
+            const tokenB = getSelectedTokenConfig('select-token-b');
 
-            let foundMarketInfo = null; // Will store { id, type, base, quote }
+            if (!tokenA || !tokenB) {
+                logMessage("Please select valid tokens from the dropdowns.", "error");
+                return null;
+            }
+            
+            if (tokenA.contract === tokenB.contract && tokenA.symbol === tokenB.symbol) {
+                 logMessage("Token A and Token B cannot be the same token.", "error");
+                 return null;
+            }
+
+            const tokenA_contract = tokenA.contract.toLowerCase();
+            const tokenA_symbol = tokenA.symbol.toUpperCase();
+            const tokenB_contract = tokenB.contract.toLowerCase();
+            const tokenB_symbol = tokenB.symbol.toUpperCase();
+
+            logMessage(`Searching for market ${tokenA_symbol}@${tokenA_contract} / ${tokenB_symbol}@${tokenB_contract}...`, "system");
+
+            let foundMarketInfo = null; // Will store { id, type, base_contract, base_symbol, quote_contract, quote_symbol }
             
             // 1. Try SWAP pools FIRST
             try {
@@ -400,24 +574,28 @@
                 const response = await fetch(url);
                 if (!response.ok) throw new Error(`Swap API failed (${response.status})`);
                 const swapMarkets = await response.json();
+
                 const foundSwapMarket = swapMarkets.find(m =>
-                    (m.tokenA.contract === tokenA && m.tokenB.contract === tokenB) ||
-                    (m.tokenA.contract === tokenB && m.tokenB.contract === tokenA)
+                    (m.tokenA.contract === tokenA_contract && m.tokenA.symbol === tokenA_symbol && m.tokenB.contract === tokenB_contract && m.tokenB.symbol === tokenB_symbol) ||
+                    (m.tokenA.contract === tokenB_contract && m.tokenA.symbol === tokenB_symbol && m.tokenB.contract === tokenA_contract && m.tokenB.symbol === tokenA_symbol)
                 );
                 
                 if (foundSwapMarket && foundSwapMarket.id > 0) { 
                     logMessage(`Found SWAP market. ID: ${foundSwapMarket.id}`, "success");
-                    let base, quote;
-                    if (foundSwapMarket.tokenA.contract === tokenA) {
-                        base = foundSwapMarket.tokenA.contract; quote = foundSwapMarket.tokenB.contract;
+                    let base_contract, base_symbol, quote_contract, quote_symbol;
+                    
+                    if (foundSwapMarket.tokenA.contract === tokenA_contract && foundSwapMarket.tokenA.symbol === tokenA_symbol) {
+                        base_contract = foundSwapMarket.tokenA.contract; base_symbol = foundSwapMarket.tokenA.symbol;
+                        quote_contract = foundSwapMarket.tokenB.contract; quote_symbol = foundSwapMarket.tokenB.symbol;
                     } else {
-                        base = foundSwapMarket.tokenB.contract; quote = foundSwapMarket.tokenA.contract;
+                        base_contract = foundSwapMarket.tokenB.contract; base_symbol = foundSwapMarket.tokenB.symbol;
+                        quote_contract = foundSwapMarket.tokenA.contract; quote_symbol = foundSwapMarket.tokenA.symbol;
                     }
-                    foundMarketInfo = { id: foundSwapMarket.id, type: 'swap', base: base, quote: quote };
+                    foundMarketInfo = { id: foundSwapMarket.id, type: 'swap', base_contract, base_symbol, quote_contract, quote_symbol };
                 } else if (foundSwapMarket && foundSwapMarket.id === 0) {
                      logMessage(`Found SWAP market but ID is 0. Treating as invalid.`, "warn");
                 } else {
-                     logMessage("Did not find a valid (>0) SWAP market.", "info");
+                     logMessage("Did not find a valid (>0) SWAP market matching both contract and symbol.", "info");
                 }
             } catch (e) { logMessage(`Could not check swap markets: ${e.message}`, "warn"); }
 
@@ -429,9 +607,10 @@
                     const response = await fetch(url);
                     if (!response.ok) throw new Error(`Spot API failed (${response.status})`);
                     const spotMarkets = await response.json();
+
                     const foundSpotMarket = spotMarkets.find(m =>
-                        (m.base_token.contract === tokenA && m.quote_token.contract === tokenB) ||
-                        (m.base_token.contract === tokenB && m.quote_token.contract === tokenA)
+                         (m.base_token.contract === tokenA_contract && m.base_token.symbol.name === tokenA_symbol && m.quote_token.contract === tokenB_contract && m.quote_token.symbol.name === tokenB_symbol) ||
+                         (m.base_token.contract === tokenB_contract && m.base_token.symbol.name === tokenB_symbol && m.quote_token.contract === tokenA_contract && m.quote_token.symbol.name === tokenA_symbol)
                     );
                     
                     if (foundSpotMarket && foundSpotMarket.id > 0) { 
@@ -439,40 +618,40 @@
                          foundMarketInfo = { 
                             id: foundSpotMarket.id, 
                             type: 'spot', 
-                            base: foundSpotMarket.base_token.contract, 
-                            quote: foundSpotMarket.quote_token.contract 
+                            base_contract: foundSpotMarket.base_token.contract, 
+                            base_symbol: foundSpotMarket.base_token.symbol.name,
+                            quote_contract: foundSpotMarket.quote_token.contract,
+                            quote_symbol: foundSpotMarket.quote_token.symbol.name
                         };
                     } else {
-                         logMessage("Did not find a valid (>0) SPOT market either.", "info");
+                         logMessage("Did not find a valid (>0) SPOT market matching both contract and symbol.", "info");
                     }
                 } catch (e) { logMessage(`Could not check spot markets: ${e.message}`, "warn"); }
             }
             
             // 3. Validate and Store Result globally
             if (foundMarketInfo) {
-                marketConfig.baseContract = foundMarketInfo.base;
-                marketConfig.quoteContract = foundMarketInfo.quote;
-                marketConfig.isInverted = (foundMarketInfo.base !== tokenA); 
-                logMessage(`Validated Market: ID ${foundMarketInfo.id} (${foundMarketInfo.type}). Base: ${marketConfig.baseContract}, Quote: ${marketConfig.quoteContract}, Inverted: ${marketConfig.isInverted}`, "system");
-                return { id: foundMarketInfo.id, type: foundMarketInfo.type }; // Return validated info
+                marketConfig.baseContract = foundMarketInfo.base_contract;
+                marketConfig.quoteContract = foundMarketInfo.quote_contract;
+                marketConfig.isInverted = !(foundMarketInfo.base_contract === tokenA_contract && foundMarketInfo.base_symbol === tokenA_symbol); 
+                
+                logMessage(`Validated Market: ID ${foundMarketInfo.id} (${foundMarketInfo.type}). Base: ${marketConfig.baseContract} (${foundMarketInfo.base_symbol}), Quote: ${marketConfig.quoteContract} (${foundMarketInfo.quote_symbol}), Inverted (relative to input A): ${marketConfig.isInverted}`, "system");
+                
+                return { id: foundMarketInfo.id, type: foundMarketInfo.type }; 
             } else {
-                logMessage(`No valid market found for ${tokenA} / ${tokenB} on Spot or Swap.`, "error");
-                return null; // Explicitly return null if no valid market found
+                logMessage(`No valid market found for ${tokenA_symbol}@${tokenA_contract} / ${tokenB_symbol}@${tokenB_contract}`, "error");
+                return null; 
             }
         }
 
+
         /**
          * ROBUST: Gets current price based on market type ('swap' or 'spot').
-         * Returns { price: number } (price of A in terms of B) or null.
+         * (This function relies on `marketConfig` which is set by `findMarketId`, so no changes are needed here)
          */
         async function getCurrentPrice(marketId, marketType) {
-            if (!marketId || !marketType) {
-                logMessage("Cannot get current price without market ID and type.", "error");
-                return null;
-            }
-
+            if (!marketId || !marketType) { logMessage("Cannot get current price without market ID and type.", "error"); return null; }
             logMessage(`Fetching current price for market ${marketId} (type: ${marketType})...`, "system");
-            const tokenA = tokenAContract.value.trim().toLowerCase(); // Needed for swap price calculation
 
             try {
                 let priceRaw; // Price of BASE in terms of QUOTE
@@ -487,8 +666,6 @@
                     logMessage(`Raw spot price (Base/Quote): ${priceRaw}`, "system");
 
                 } else if (marketType === 'swap') {
-                    // Fetch all pools and find the right one
-                    // TODO: Check if Alcor has a /swap/pools/{id} endpoint for efficiency
                     const url = `${ALCOR_API}/swap/pools`;
                     const response = await fetch(url);
                     if (!response.ok) throw new Error(`Swap Pools API failed (${response.status})`);
@@ -496,36 +673,36 @@
                     const pool = swapPools.find(p => p.id === marketId);
                     if (!pool) throw new Error(`Swap pool ${marketId} not found in list.`);
 
-                    // Extract reserves (remove symbol, parse float)
+                    if (typeof pool.reserveA !== 'string' || typeof pool.reserveB !== 'string') {
+                        throw new Error(`Reserve data missing or invalid format in pool object for ID ${marketId}. Cannot calculate price.`);
+                    }
+
                     const reserveA = parseFloat(pool.reserveA.split(' ')[0]);
                     const reserveB = parseFloat(pool.reserveB.split(' ')[0]);
-                    if (isNaN(reserveA) || isNaN(reserveB)) throw new Error("Invalid reserve values in pool data.");
+                    
+                    if (isNaN(reserveA) || isNaN(reserveB)) {
+                         throw new Error(`Parsed reserve values are invalid (NaN) for pool ID ${marketId}.`);
+                    }
 
                     logMessage(`Swap Pool Reserves: A=${reserveA}, B=${reserveB}`, "system");
 
-                    // Determine price based on which token is A and B in the pool response
                     if (pool.tokenA.contract === marketConfig.baseContract) {
-                        // Pool A is Base, Pool B is Quote
-                        if (reserveA === 0) throw new Error("Base reserve is 0, cannot calculate swap price.");
-                        priceRaw = reserveB / reserveA; // Price = Quote / Base
+                        if (reserveA === 0) { priceRaw = 0; logMessage("Warning: Base reserve (A) is 0. Price is effectively 0.", "warn"); } 
+                        else { priceRaw = reserveB / reserveA; } // Price = Quote / Base
                     } else {
-                         // Pool B is Base, Pool A is Quote
-                         if (reserveB === 0) throw new Error("Base reserve is 0, cannot calculate swap price.");
-                         priceRaw = reserveA / reserveB; // Price = Quote / Base
+                         if (reserveB === 0) { priceRaw = 0; logMessage("Warning: Base reserve (B) is 0. Price is effectively 0.", "warn"); }
+                         else { priceRaw = reserveA / reserveB; } // Price = Quote / Base
                     }
                     logMessage(`Raw swap price (Base/Quote): ${priceRaw}`, "system");
                 } else {
                     throw new Error(`Unknown market type: ${marketType}`);
                 }
 
-                // Now handle inversion based on marketConfig (set by findMarketId)
                 if (marketConfig.isInverted) { 
-                    // Base token is NOT our Token A. We need 1 / priceRaw.
                     if (priceRaw === 0) { logMessage("Warning: Raw price is 0, cannot calculate reciprocal. Using 0.", "warn"); return { price: 0 }; }
                     logMessage("Market is inverted relative to input. Calculating reciprocal price.", "system");
                     return { price: 1 / priceRaw };
                 } else {
-                    // Base token IS our Token A. priceRaw is correct.
                     return { price: priceRaw };
                 }
 
@@ -538,29 +715,96 @@
 
         /**
          * Gets price history from Alcor API (Used ONLY by RSI strategy now)
+         * (This function relies on `marketConfig` which is set by `findMarketId`, so no changes are needed here)
          */
-        async function getPriceHistory(marketIdToFetch) { /* ... content largely unchanged, ensures it uses the correct marketId ... */
-            if (!marketIdToFetch) { logMessage("Cannot get price history without market ID.", "warn"); return null; }
-            const timeframe = timeframeSelect.value; const now = Math.floor(Date.now() / 1000); const from = now - (60 * parseInt(timeframe) * 50); const resolution = timeframe; const url = `${ALCOR_API}/charts/history?market=${marketIdToFetch}&resolution=${resolution}&from=${from}&to=${now}`;
-            logMessage(`Fetching price history for RSI (ID: ${marketIdToFetch}, TF: ${timeframe}m)...`, "system");
-            try {
-                const response = await fetch(url);
-                if (!response.ok) { if (response.status === 404) { logMessage(`No price history found for market ${marketIdToFetch} at ${timeframe}m resolution.`, "warn"); return null; } throw new Error(`History API failed (${response.status})`); }
-                const data = await response.json(); if (!data || data.length === 0) { logMessage("No price history data returned from Alcor.", "warn"); return null; }
-                if (marketConfig.isInverted) {
-                     logMessage("History: Market is inverted. Inverting prices.", "system");
-                    return data.map(d => ({ time: d.time, open: d.open ? 1 / d.open : 0, high: d.low ? 1 / d.low : 0, low: d.high ? 1 / d.high : 0, close: d.close ? 1 / d.close : 0, volume: d.volume * (d.close || 0) })).filter(d => isFinite(d.open) && isFinite(d.high) && isFinite(d.low) && isFinite(d.close)); 
-                } else {
-                      return data.map(d => ({ time: d.time, open: parseFloat(d.open || 0), high: parseFloat(d.high || 0), low: parseFloat(d.low || 0), close: parseFloat(d.close || 0), volume: parseFloat(d.volume || 0) })).filter(d => isFinite(d.open) && isFinite(d.high) && isFinite(d.low) && isFinite(d.close));
-                }
-            } catch (e) { logMessage(`Failed to get price history: ${e.message}`, "error"); return null; }
-        }
+        async function getPriceHistory(marketIdToFetch) { /* ... content unchanged ... */ if (!marketIdToFetch) { logMessage("Cannot get price history without market ID.", "warn"); return null; } const timeframe = timeframeSelect.value; const now = Math.floor(Date.now() / 1000); const from = now - (60 * parseInt(timeframe) * 50); const resolution = timeframe; const url = `${ALCOR_API}/charts/history?market=${marketIdToFetch}&resolution=${resolution}&from=${from}&to=${now}`; logMessage(`Fetching price history for RSI (ID: ${marketIdToFetch}, TF: ${timeframe}m)...`, "system"); try { const response = await fetch(url); if (!response.ok) { if (response.status === 404) { logMessage(`No price history found for market ${marketIdToFetch} at ${timeframe}m resolution.`, "warn"); return null; } throw new Error(`History API failed (${response.status})`); } const data = await response.json(); if (!data || data.length === 0) { logMessage("No price history data returned from Alcor.", "warn"); return null; } if (marketConfig.isInverted) { logMessage("History: Market is inverted. Inverting prices.", "system"); return data.map(d => ({ time: d.time, open: d.open ? 1 / d.open : 0, high: d.low ? 1 / d.low : 0, low: d.high ? 1 / d.high : 0, close: d.close ? 1 / d.close : 0, volume: d.volume * (d.close || 0) })).filter(d => isFinite(d.open) && isFinite(d.high) && isFinite(d.low) && isFinite(d.close)); } else { return data.map(d => ({ time: d.time, open: parseFloat(d.open || 0), high: parseFloat(d.high || 0), low: parseFloat(d.low || 0), close: parseFloat(d.close || 0), volume: parseFloat(d.volume || 0) })).filter(d => isFinite(d.open) && isFinite(d.high) && isFinite(d.low) && isFinite(d.close)); } } catch (e) { logMessage(`Failed to get price history: ${e.message}`, "error"); return null; } }
 
         /**
-         * Executes the swap transaction on Alcor
+         * [ --- MODIFIED: `executeSwap` --- ]
+         * Uses getSelectedTokenConfig() helper to get token data.
          */
-        async function executeSwap(direction) { /* ... content unchanged ... */ 
-            logMessage(`Attempting to execute ${direction.toUpperCase()} swap...`, "system"); try { const config = { aSymbol: tokenASymbol.value.trim().toUpperCase(), aContract: tokenAContract.value.trim(), aDecimals: parseInt(tokenADecimals.value), bSymbol: tokenBSymbol.value.trim().toUpperCase(), bContract: tokenBContract.value.trim(), bDecimals: parseInt(tokenBDecimals.value), dex: dexContract.value.trim(), amountA: parseFloat(tradeAmountA.value), amountB: parseFloat(tradeAmountB.value) }; if (!config.aSymbol || !config.aContract || !config.bSymbol || !config.bContract || isNaN(config.aDecimals) || isNaN(config.bDecimals) || isNaN(config.amountA) || isNaN(config.amountB) || config.amountA <= 0 || config.amountB <= 0) { logMessage("Invalid token configuration or trade amounts.", "error"); return; } let actions = []; if (direction === 'sell') { const totalSellAmount = config.amountA; const feeAmount = totalSellAmount * FEE_PERCENT; const userAmount = totalSellAmount - feeAmount; if (userAmount <= 0) { logMessage("Sell amount too small for fee.", "error"); return; } const userQuantity = `${userAmount.toFixed(config.aDecimals)} ${config.aSymbol}`; const minReturnUser = (0).toFixed(config.bDecimals); const memoUser = `swap,${minReturnUser} ${config.bSymbol},${config.bContract}`; actions.push({ account: config.aContract, name: 'transfer', authorization: [{ actor: userAccount, permission: 'active' }], data: { from: userAccount, to: config.dex, quantity: userQuantity, memo: memoUser } }); const feeQuantity = `${feeAmount.toFixed(config.aDecimals)} ${config.aSymbol}`; if (feeAmount > 0) { actions.push({ account: config.aContract, name: 'transfer', authorization: [{ actor: userAccount, permission: 'active' }], data: { from: userAccount, to: FEE_RECEIVER, quantity: feeQuantity, memo: `0.1% fee from WAX TA Trader` } }); logMessage(`ACTION (Fee): Transfer ${feeQuantity} to ${FEE_RECEIVER}`, "info"); } logMessage(`ACTION (User): Transfer ${userQuantity} to ${config.dex} | Memo: ${memoUser}`, "info"); } else if (direction === 'buy') { const quantity = `${config.amountB.toFixed(config.bDecimals)} ${config.bSymbol}`; const minReturn = (0).toFixed(config.aDecimals); const memo = `swap,${minReturn} ${config.aSymbol},${config.aContract}`; actions.push({ account: config.bContract, name: 'transfer', authorization: [{ actor: userAccount, permission: 'active' }], data: { from: userAccount, to: config.dex, quantity: quantity, memo: memo } }); logMessage(`ACTION: Transfer ${quantity} to ${config.dex} | Memo: ${memo}`, "info"); } const result = await wax.api.transact({ actions }, { blocksBehind: 3, expireSeconds: 1200 }); logMessage(`Swap successful! TxID: ${result.transaction_id.substring(0, 12)}...`, "success"); if (direction === 'buy') { updatePnl('buy', config.amountB); } else if (direction === 'sell') { if (lastPrices.length > 0) { const currentPrice = lastPrices[lastPrices.length - 1].close; const userAmountSold = config.amountA * (1 - FEE_PERCENT); const estimatedReceivedB = userAmountSold * currentPrice; logMessage(`Est. ${estimatedReceivedB.toFixed(config.bDecimals)} ${config.bSymbol} received.`, "info"); updatePnl('sell', estimatedReceivedB); } else { logMessage(`Could not estimate PnL for sell trade, no current price data available.`, "warn"); } } } catch (e) { let errorMessage = e.message; try { const errorJson = JSON.parse(e.message); if (errorJson.error?.details?.length > 0) errorMessage = errorJson.error.details[0].message; else if (errorJson.error?.what) errorMessage = errorJson.error.what; } catch (parseError) {} logMessage(`Swap failed: ${errorMessage}`, "error"); } 
+        async function executeSwap(direction) {
+            logMessage(`Attempting to execute ${direction.toUpperCase()} swap...`, "system"); 
+            
+            try {
+                const tokenA = getSelectedTokenConfig('select-token-a');
+                const tokenB = getSelectedTokenConfig('select-token-b');
+                if (!tokenA || !tokenB) {
+                    logMessage("Selected tokens are invalid. Cannot execute swap.", "error");
+                    return;
+                }
+                
+                // Build config object from selected tokens
+                const config = {
+                    aSymbol: tokenA.symbol.toUpperCase(),
+                    aContract: tokenA.contract,
+                    aDecimals: tokenA.decimals,
+                    bSymbol: tokenB.symbol.toUpperCase(),
+                    bContract: tokenB.contract,
+                    bDecimals: tokenB.decimals,
+                    dex: dexContract.value.trim(),
+                    amountA: parseFloat(tradeAmountA.value),
+                    amountB: parseFloat(tradeAmountB.value)
+                };
+
+                if (!config.aSymbol || !config.aContract || !config.bSymbol || !config.bContract || isNaN(config.aDecimals) || isNaN(config.bDecimals) || isNaN(config.amountA) || isNaN(config.amountB) || config.amountA <= 0 || config.amountB <= 0) { 
+                    logMessage("Invalid token configuration or trade amounts.", "error"); 
+                    return; 
+                } 
+                
+                let actions = []; 
+                if (direction === 'sell') { 
+                    const totalSellAmount = config.amountA; 
+                    const feeAmount = totalSellAmount * FEE_PERCENT; 
+                    const userAmount = totalSellAmount - feeAmount; 
+                    if (userAmount <= 0) { 
+                        logMessage("Sell amount too small for fee.", "error"); 
+                        return; 
+                    } 
+                    const userQuantity = `${userAmount.toFixed(config.aDecimals)} ${config.aSymbol}`; 
+                    const minReturnUser = (0).toFixed(config.bDecimals); 
+                    const memoUser = `swap,${minReturnUser} ${config.bSymbol},${config.bContract}`; 
+                    actions.push({ account: config.aContract, name: 'transfer', authorization: [{ actor: userAccount, permission: 'active' }], data: { from: userAccount, to: config.dex, quantity: userQuantity, memo: memoUser } }); 
+                    
+                    const feeQuantity = `${feeAmount.toFixed(config.aDecimals)} ${config.aSymbol}`; 
+                    if (feeAmount > 0) { 
+                        actions.push({ account: config.aContract, name: 'transfer', authorization: [{ actor: userAccount, permission: 'active' }], data: { from: userAccount, to: FEE_RECEIVER, quantity: feeQuantity, memo: `0.1% fee from WAX TA Trader` } }); 
+                        logMessage(`ACTION (Fee): Transfer ${feeQuantity} to ${FEE_RECEIVER}`, "info"); 
+                    } 
+                    logMessage(`ACTION (User): Transfer ${userQuantity} to ${config.dex} | Memo: ${memoUser}`, "info"); 
+                } else if (direction === 'buy') { 
+                    const quantity = `${config.amountB.toFixed(config.bDecimals)} ${config.bSymbol}`; 
+                    const minReturn = (0).toFixed(config.aDecimals); 
+                    const memo = `swap,${minReturn} ${config.aSymbol},${config.aContract}`; 
+                    actions.push({ account: config.bContract, name: 'transfer', authorization: [{ actor: userAccount, permission: 'active' }], data: { from: userAccount, to: config.dex, quantity: quantity, memo: memo } }); 
+                    logMessage(`ACTION: Transfer ${quantity} to ${config.dex} | Memo: ${memo}`, "info"); 
+                } 
+                
+                const result = await wax.api.transact({ actions }, { blocksBehind: 3, expireSeconds: 1200 }); 
+                logMessage(`Swap successful! TxID: ${result.transaction_id.substring(0, 12)}...`, "success"); 
+                
+                if (direction === 'buy') { 
+                    updatePnl('buy', config.amountB); 
+                } else if (direction === 'sell') { 
+                    if (lastPrices.length > 0) { 
+                        const currentPrice = lastPrices[lastPrices.length - 1].close; 
+                        const userAmountSold = config.amountA * (1 - FEE_PERCENT); 
+                        const estimatedReceivedB = userAmountSold * currentPrice; 
+                        logMessage(`Est. ${estimatedReceivedB.toFixed(config.bDecimals)} ${config.bSymbol} received.`, "info"); 
+                        updatePnl('sell', estimatedReceivedB); 
+                    } else { 
+                        logMessage(`Could not estimate PnL for sell trade, no current price data available.`, "warn"); 
+                    } 
+                } 
+            } catch (e) { 
+                let errorMessage = e.message; 
+                try { 
+                    const errorJson = JSON.parse(e.message); 
+                    if (errorJson.error?.details?.length > 0) errorMessage = errorJson.error.details[0].message; 
+                    else if (errorJson.error?.what) errorMessage = errorJson.error.what; 
+                } catch (parseError) {} 
+                logMessage(`Swap failed: ${errorMessage}`, "error"); 
+            } 
         }
     </script>
 </body>
