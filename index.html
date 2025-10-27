@@ -9,126 +9,8 @@
     <script src="trendyways.min.js"></script>
 
     <style>
-        /* --- Base Styles --- */
-        :root {
-            --bg-primary: #1a1c23;
-            --bg-secondary: #242731;
-            --bg-tertiary: #3a3f4c;
-            --border-color: #4a5160;
-            --text-primary: #e0e2e8;
-            --text-secondary: #a0a6b3;
-            --text-cyan: #22d3ee;
-            --text-green: #34d399;
-            --text-red: #f87171;
-            --text-yellow: #facc15;
-            --text-blue: #60a5fa;
-            --accent-cyan: #06b6d4;
-            --accent-cyan-hover: #0891b2;
-            --accent-green: #10b981;
-            --accent-green-hover: #059669;
-            --accent-red: #ef4444;
-            --accent-red-hover: #dc2626;
-            --accent-blue: #3b82f6;
-            --accent-blue-hover: #2563eb;
-            --shadow-color: rgba(0, 0, 0, 0.2);
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            --font-mono: 'Courier New', Courier, monospace;
-        }
-
-        /* --- Global Resets & Body --- */
-        * { box-sizing: border-box; }
-        body { background-color: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); margin: 0; padding: 1rem; min-height: 100vh; }
-        @media (min-width: 768px) { body { padding: 2rem; } }
-        .container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; }
-        h1 { font-size: 2.25rem; font-weight: 700; text-align: center; margin: 0 0 1rem 0; color: var(--text-cyan); }
-        h2 { font-size: 1.5rem; font-weight: 600; margin: 0 0 1rem 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--text-primary); }
-
-        /* --- App Structure --- */
-        .app-section { background-color: var(--bg-secondary); padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 12px var(--shadow-color); }
-        .alert { padding: 1rem; border-radius: 6px; border-left: 4px solid; }
-        .alert-critical { background-color: #450a0a; border-color: var(--text-red); color: #fecaca; }
-        .alert-critical p { margin: 0; }
-        .alert-critical strong { color: white; font-weight: 600; }
-
-        /* --- Forms & Inputs --- */
-        fieldset { border: 1px solid var(--border-color); border-radius: 6px; padding: 1rem 1.5rem; margin-bottom: 1rem; }
-        legend { padding: 0 0.5rem; font-weight: 600; color: var(--text-primary); font-size: 1.1rem; }
-        .form-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 1rem; }
-        @media (min-width: 768px) { .form-grid-cols-3 { grid-template-columns: repeat(3, 1fr); } .form-grid-cols-2 { grid-template-columns: repeat(2, 1fr); } }
-        .form-group { display: flex; flex-direction: column; gap: 0.25rem; }
-        label { display: block; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); }
-        label .default-text { font-size: 0.75rem; color: var(--text-cyan); margin-left: 0.25rem; }
-        input[type="text"], input[type="number"], select { background-color: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 6px; padding: 0.75rem 1rem; width: 100%; transition: border-color 0.2s, box-shadow 0.2s; font-size: 0.9rem; }
-        input[type="text"]:focus, input[type="number"]:focus, select:focus { outline: none; border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.3); }
-        .note { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.5rem; }
-
-        /* --- Buttons --- */
-        button { font-weight: 600; padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer; border: none; transition: background-color 0.2s, opacity 0.2s; width: 100%; font-size: 1rem; }
-        button.primary { background-color: var(--accent-cyan); color: var(--bg-primary); }
-        button.primary:hover { background-color: var(--accent-cyan-hover); }
-        button.secondary { background-color: var(--bg-tertiary); color: var(--text-primary); width: auto; font-size: 0.8rem; font-weight: 500; padding: 0.25rem 0.75rem; }
-        button.secondary:hover { background-color: var(--border-color); }
-        button.start { background-color: var(--accent-green); color: white; }
-        button.start:hover { background-color: var(--accent-green-hover); }
-        button.stop { background-color: var(--accent-red); color: white; }
-        button.stop:hover { background-color: var(--accent-red-hover); }
-        button:disabled { background-color: var(--bg-tertiary); color: var(--text-secondary); cursor: not-allowed; opacity: 0.7; }
-        .button-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-
-        /* --- Status & Log --- */
-        .status-grid { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
-        .status-item { display: flex; justify-content: space-between; align-items: center; }
-        .status-item .label { color: var(--text-secondary); font-size: 0.9rem; }
-        .status-item .value { font-weight: 700; font-size: 1rem; }
-        .status-item .value-group { display: flex; align-items: center; gap: 0.5rem; }
-        #user-account { color: var(--text-green); }
-        #pnl-display.positive { color: var(--text-green); }
-        #pnl-display.negative { color: var(--text-red); }
-        #pnl-display.neutral { color: var(--text-secondary); }
-        .bot-status-container { text-align: center; }
-        #bot-status { font-weight: 700; font-size: 1.1rem; }
-        #bot-status.running { color: var(--text-green); }
-        #bot-status.stopped { color: var(--text-red); }
-
-        /* --- Log Output --- */
-        #log-output { font-family: var(--font-mono); max-height: 400px; overflow-y: auto; background-color: var(--bg-primary); border: 1px solid var(--border-color); padding: 1rem; border-radius: 6px; font-size: 0.875rem; }
-        #log-output p { margin: 0 0 0.35rem 0; border-bottom: 1px solid var(--bg-tertiary); padding-bottom: 0.35rem; word-break: break-all; line-height: 1.6; }
-        #log-output p:last-child { border-bottom: none; margin-bottom: 0; }
-        #log-output .log-time { color: var(--text-secondary); margin-right: 0.5rem; }
-        #log-output .log-info { color: var(--text-primary); }
-        #log-output .log-error { color: var(--text-red); }
-        #log-output .log-success { color: var(--text-green); }
-        #log-output .log-warn { color: var(--text-yellow); }
-        #log-output .log-system { color: var(--text-cyan); }
-        #log-output .log-idle { color: var(--text-secondary); }
-
-        /* --- Strategy Settings --- */
-        .strategy-settings.hidden { display: none; }
-        hr { border: none; border-top: 1px solid var(--border-color); margin: 1.5rem 0; }
-
-        /* --- Modal --- */
-        .modal-overlay { display: none; position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.75); align-items: center; justify-content: center; z-index: 50; padding: 1rem; }
-        .modal-overlay.visible { display: flex; }
-        .modal-content { background-color: var(--bg-secondary); width: 100%; max-width: 500px; padding: 2rem; border-radius: 8px; box-shadow: 0 10px 30px var(--shadow-color); position: relative; }
-        .modal-close-btn { position: absolute; top: 0.75rem; right: 1.25rem; color: var(--text-secondary); font-size: 2.5rem; font-weight: 300; background: none; border: none; cursor: pointer; padding: 0; width: auto; line-height: 1; }
-        .modal-close-btn:hover { color: var(--text-primary); }
-        .modal-content h2 { text-align: center; color: var(--text-cyan); margin-top: 0; margin-bottom: 1.5rem; border: none; }
-        .modal-summary { background-color: var(--bg-tertiary); padding: 1.5rem; border-radius: 6px; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
-        .modal-summary-item { display: flex; justify-content: space-between; align-items: center; }
-        .modal-summary-item .label { color: var(--text-secondary); }
-        .modal-summary-item .value { font-weight: 600; }
-        #share-wallet { color: var(--text-cyan); }
-        #share-spent { color: var(--text-red); }
-        #share-received { color: var(--text-green); }
-        .modal-summary hr { margin: 0.5rem 0; }
-        .modal-summary-total { font-size: 1.25rem; font-weight: 700; }
-        #share-pnl.positive { color: var(--text-green); }
-        #share-pnl.negative { color: var(--text-red); }
-        #share-pnl.neutral { color: var(--text-secondary); }
-        #copy-share-btn { background-color: var(--accent-cyan); color: var(--bg-primary); }
-        #copy-share-btn:hover { background-color: var(--accent-cyan-hover); }
-        #share-text { position: absolute; left: -9999px; opacity: 0; }
-
+        /* CSS Styles remain unchanged - Omitted for brevity */
+        :root{--bg-primary:#1a1c23;--bg-secondary:#242731;--bg-tertiary:#3a3f4c;--border-color:#4a5160;--text-primary:#e0e2e8;--text-secondary:#a0a6b3;--text-cyan:#22d3ee;--text-green:#34d399;--text-red:#f87171;--text-yellow:#facc15;--text-blue:#60a5fa;--accent-cyan:#06b6d4;--accent-cyan-hover:#0891b2;--accent-green:#10b981;--accent-green-hover:#059669;--accent-red:#ef4444;--accent-red-hover:#dc2626;--accent-blue:#3b82f6;--accent-blue-hover:#2563eb;--shadow-color:rgba(0,0,0,0.2);--font-sans:'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;--font-mono:'Courier New', Courier, monospace;}*{box-sizing:border-box;}body{background-color:var(--bg-primary);color:var(--text-primary);font-family:var(--font-sans);margin:0;padding:1rem;min-height:100vh;}@media (min-width: 768px){body{padding:2rem;}}.container{max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:1.5rem;}h1{font-size:2.25rem;font-weight:700;text-align:center;margin:0 0 1rem 0;color:var(--text-cyan);}h2{font-size:1.5rem;font-weight:600;margin:0 0 1rem 0;border-bottom:1px solid var(--border-color);padding-bottom:0.5rem;color:var(--text-primary);}.app-section{background-color:var(--bg-secondary);padding:1.5rem;border-radius:8px;box-shadow:0 4px 12px var(--shadow-color);}.alert{padding:1rem;border-radius:6px;border-left:4px solid;}.alert-critical{background-color:#450a0a;border-color:var(--text-red);color:#fecaca;}.alert-critical p{margin:0;}.alert-critical strong{color:white;font-weight:600;}fieldset{border:1px solid var(--border-color);border-radius:6px;padding:1rem 1.5rem;margin-bottom:1rem;}legend{padding:0 0.5rem;font-weight:600;color:var(--text-primary);font-size:1.1rem;}.form-grid{display:grid;grid-template-columns:repeat(1, 1fr);gap:1rem;}@media (min-width: 768px){.form-grid-cols-3{grid-template-columns:repeat(3, 1fr);}.form-grid-cols-2{grid-template-columns:repeat(2, 1fr);}}.form-group{display:flex;flex-direction:column;gap:0.25rem;}label{display:block;font-size:0.875rem;font-weight:500;color:var(--text-secondary);}label .default-text{font-size:0.75rem;color:var(--text-cyan);margin-left:0.25rem;}input[type="text"], input[type="number"], select{background-color:var(--bg-tertiary);border:1px solid var(--border-color);color:var(--text-primary);border-radius:6px;padding:0.75rem 1rem;width:100%;transition:border-color 0.2s, box-shadow 0.2s;font-size:0.9rem;}input[type="text"]:focus, input[type="number"]:focus, select:focus{outline:none;border-color:var(--accent-cyan);box-shadow:0 0 0 3px rgba(6, 182, 212, 0.3);}.note{font-size:0.75rem;color:var(--text-secondary);margin-top:0.5rem;}button{font-weight:600;padding:0.75rem 1rem;border-radius:6px;cursor:pointer;border:none;transition:background-color 0.2s, opacity 0.2s;width:100%;font-size:1rem;}button.primary{background-color:var(--accent-cyan);color:var(--bg-primary);}button.primary:hover{background-color:var(--accent-cyan-hover);}button.secondary{background-color:var(--bg-tertiary);color:var(--text-primary);width:auto;font-size:0.8rem;font-weight:500;padding:0.25rem 0.75rem;}button.secondary:hover{background-color:var(--border-color);}button.start{background-color:var(--accent-green);color:white;}button.start:hover{background-color:var(--accent-green-hover);}button.stop{background-color:var(--accent-red);color:white;}button.stop:hover{background-color:var(--accent-red-hover);}button:disabled{background-color:var(--bg-tertiary);color:var(--text-secondary);cursor:not-allowed;opacity:0.7;}.button-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}.status-grid{margin-top:1rem;display:flex;flex-direction:column;gap:0.75rem;}.status-item{display:flex;justify-content:space-between;align-items:center;}.status-item .label{color:var(--text-secondary);font-size:0.9rem;}.status-item .value{font-weight:700;font-size:1rem;}.status-item .value-group{display:flex;align-items:center;gap:0.5rem;}#user-account{color:var(--text-green);}#pnl-display.positive{color:var(--text-green);}#pnl-display.negative{color:var(--text-red);}#pnl-display.neutral{color:var(--text-secondary);}.bot-status-container{text-align:center;}#bot-status{font-weight:700;font-size:1.1rem;}#bot-status.running{color:var(--text-green);}#bot-status.stopped{color:var(--text-red);}#log-output{font-family:var(--font-mono);max-height:400px;overflow-y:auto;background-color:var(--bg-primary);border:1px solid var(--border-color);padding:1rem;border-radius:6px;font-size:0.875rem;}#log-output p{margin:0 0 0.35rem 0;border-bottom:1px solid var(--bg-tertiary);padding-bottom:0.35rem;word-break:break-all;line-height:1.6;}#log-output p:last-child{border-bottom:none;margin-bottom:0;}#log-output .log-time{color:var(--text-secondary);margin-right:0.5rem;}#log-output .log-info{color:var(--text-primary);}#log-output .log-error{color:var(--text-red);}#log-output .log-success{color:var(--text-green);}#log-output .log-warn{color:var(--text-yellow);}#log-output .log-system{color:var(--text-cyan);}#log-output .log-idle{color:var(--text-secondary);}.strategy-settings.hidden{display:none;}hr{border:none;border-top:1px solid var(--border-color);margin:1.5rem 0;}.modal-overlay{display:none;position:fixed;inset:0;background-color:rgba(0,0,0,0.75);align-items:center;justify-content:center;z-index:50;padding:1rem;}.modal-overlay.visible{display:flex;}.modal-content{background-color:var(--bg-secondary);width:100%;max-width:500px;padding:2rem;border-radius:8px;box-shadow:0 10px 30px var(--shadow-color);position:relative;}.modal-close-btn{position:absolute;top:0.75rem;right:1.25rem;color:var(--text-secondary);font-size:2.5rem;font-weight:300;background:none;border:none;cursor:pointer;padding:0;width:auto;line-height:1;}.modal-close-btn:hover{color:var(--text-primary);}.modal-content h2{text-align:center;color:var(--text-cyan);margin-top:0;margin-bottom:1.5rem;border:none;}.modal-summary{background-color:var(--bg-tertiary);padding:1.5rem;border-radius:6px;margin-bottom:1.5rem;display:flex;flex-direction:column;gap:0.75rem;}.modal-summary-item{display:flex;justify-content:space-between;align-items:center;}.modal-summary-item .label{color:var(--text-secondary);}.modal-summary-item .value{font-weight:600;}#share-wallet{color:var(--text-cyan);}#share-spent{color:var(--text-red);}#share-received{color:var(--text-green);}.modal-summary hr{margin:0.5rem 0;}.modal-summary-total{font-size:1.25rem;font-weight:700;}#share-pnl.positive{color:var(--text-green);}#share-pnl.negative{color:var(--text-red);}#share-pnl.neutral{color:var(--text-secondary);}#copy-share-btn{background-color:var(--accent-cyan);color:var(--bg-primary);}#copy-share-btn:hover{background-color:var(--accent-cyan-hover);}#share-text{position:absolute;left:-9999px;opacity:0;}
     </style>
 </head>
 <body>
@@ -341,11 +223,12 @@
         let userAccount = null;
         let botInterval = null;
         let isBotRunning = false;
-        let lastPrices = []; // Store prices for PnL estimation (Only used by Sell PnL estimate now)
+        let lastPrices = []; // Store prices for PnL estimation
         let pnlData = { totalSpentTokenB: 0, totalReceivedTokenB: 0, pnl: 0 };
         
-        let marketId = null; // Will be fetched from API
-        let marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; // Added isInverted flag
+        // NEW: Store market info including type
+        let currentMarket = { id: null, type: null }; // type can be 'swap' or 'spot'
+        let marketConfig = { baseContract: null, quoteContract: null, isInverted: false };
         
         let tw = null; // Trendyways library
         
@@ -417,104 +300,161 @@
         }
 
         // --- Bot Control ---
-        async function startBot() { /* ... content unchanged ... */ 
-            if (!userAccount) { logMessage("Please log in before starting the bot.", "error"); return; } if (isBotRunning) return; marketId = null; marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; logMessage("Bot starting... Running first check.", "system"); const successfulFirstRun = await runBotLogic(); if (successfulFirstRun) { isBotRunning = true; botStatusDisplay.textContent = "RUNNING"; botStatusDisplay.className = "running"; startBtn.disabled = true; stopBtn.disabled = false; logMessage("Bot started successfully!", "success"); const checkInterval = parseInt(timeframeSelect.value) * 60 * 1000; botInterval = setInterval(runBotLogic, Math.max(60000, checkInterval)); } else { logMessage("Bot failed to start. Check contracts, symbols, and Alcor API status.", "error"); } 
+        async function startBot() { 
+            if (!userAccount) { logMessage("Please log in before starting the bot.", "error"); return; } 
+            if (isBotRunning) return; 
+            // Reset market info on each start
+            currentMarket = { id: null, type: null }; 
+            marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; 
+            logMessage("Bot starting... Running first check.", "system"); 
+            const successfulFirstRun = await runBotLogic(); 
+            if (successfulFirstRun) { 
+                isBotRunning = true; 
+                botStatusDisplay.textContent = "RUNNING"; 
+                botStatusDisplay.className = "running"; 
+                startBtn.disabled = true; 
+                stopBtn.disabled = false; 
+                logMessage("Bot started successfully!", "success"); 
+                const checkInterval = parseInt(timeframeSelect.value) * 60 * 1000; 
+                botInterval = setInterval(runBotLogic, Math.max(60000, checkInterval)); 
+            } else { 
+                logMessage("Bot failed to start. Check contracts, symbols, and Alcor API status.", "error"); 
+            } 
         }
-        function stopBot() { /* ... content unchanged ... */ 
-            if (!isBotRunning) return; isBotRunning = false; clearInterval(botInterval); marketId = null; marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; botStatusDisplay.textContent = "STOPPED"; botStatusDisplay.className = "stopped"; startBtn.disabled = false; stopBtn.disabled = true; logMessage("Bot stopped.", "system"); 
+        function stopBot() { 
+            if (!isBotRunning) return; 
+            isBotRunning = false; 
+            clearInterval(botInterval); 
+            // Clear market info on stop
+            currentMarket = { id: null, type: null }; 
+            marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; 
+            botStatusDisplay.textContent = "STOPPED"; 
+            botStatusDisplay.className = "stopped"; 
+            startBtn.disabled = false; 
+            stopBtn.disabled = true; 
+            logMessage("Bot stopped.", "system"); 
         }
 
         // --- Core Bot Logic ---
-        async function runBotLogic() { /* ... uses updated findMarketId, getCurrentPrice ... */ 
-             if (!isBotRunning && !userAccount) { return false; } logMessage("Running strategy check...", "info"); try { if (!marketId) { const foundId = await findMarketId(); if (!foundId) { logMessage("Market ID could not be found or validated. Check token contracts.", "error"); return isBotRunning; } marketId = foundId; } const currentPriceData = await getCurrentPrice(); if (!currentPriceData) { logMessage("Could not fetch current price.", "warn"); return isBotRunning; } const currentPrice = currentPriceData.price; logMessage(`Current price: 1 ${tokenASymbol.value.trim().toUpperCase()} = ${currentPrice.toFixed(8)} ${tokenBSymbol.value.trim().toUpperCase()}`, "info"); lastPrices = [{ close: currentPrice }]; const selectedStrategy = strategySelect.value; if (selectedStrategy === 'price-range') { const lowerBuyPrice = parseFloat(priceLower.value); const upperSellPrice = parseFloat(priceUpper.value); if (isNaN(lowerBuyPrice) || isNaN(upperSellPrice) || lowerBuyPrice <= 0 || upperSellPrice <= 0) { logMessage("Price Range: Please set a valid lower and upper price.", "warn"); return true; } if (currentPrice <= lowerBuyPrice) { logMessage(`PRICE BUY TRIGGER! Price (${currentPrice.toFixed(8)}) <= ${lowerBuyPrice}.`, "success"); await executeSwap('buy'); } else if (currentPrice >= upperSellPrice) { logMessage(`PRICE SELL TRIGGER! Price (${currentPrice.toFixed(8)}) >= ${upperSellPrice}.`, "success"); await executeSwap('sell'); } else { logMessage(`Price Range: No trigger. Price is between ${lowerBuyPrice} and ${upperSellPrice}.`, "info"); } } else if (selectedStrategy === 'rsi') { const prices = await getPriceHistory(); if (!prices || prices.length < 14) { logMessage("RSI: Not enough historical data or history fetch failed. Skipping RSI check.", "warn"); } else { const closePrices = prices.map(p => p.close); const rsiValues = tw.rsi(closePrices, 14); const currentRSI = rsiValues[rsiValues.length - 1]; logMessage(`Current RSI: ${currentRSI.toFixed(2)}`, "info"); const buyLevel = parseFloat(rsiBuy.value); const sellLevel = parseFloat(rsiSell.value); if (currentRSI <= buyLevel) { logMessage(`RSI BUY TRIGGER! RSI (${currentRSI.toFixed(2)}) <= ${buyLevel}.`, "success"); await executeSwap('buy'); } else if (currentRSI >= sellLevel) { logMessage(`RSI SELL TRIGGER! RSI (${currentRSI.toFixed(2)}) >= ${sellLevel}.`, "success"); await executeSwap('sell'); } else { logMessage(`RSI: No trigger. RSI is between ${buyLevel} and ${sellLevel}.`, "info"); } } } return true; } catch (e) { logMessage(`Error in bot logic: ${e.message}`, "error"); marketId = null; marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; return false; } 
+        async function runBotLogic() { 
+             if (!isBotRunning && !userAccount) { return false; } 
+             logMessage("Running strategy check...", "info"); 
+             try { 
+                // 1. Ensure Market Info is found (uses new findMarketId)
+                if (!currentMarket.id || !currentMarket.type) {
+                    const marketInfo = await findMarketId(); // Returns { id, type } or null
+                    if (!marketInfo) {
+                        logMessage("Market could not be found or validated. Check token contracts.", "error");
+                        return isBotRunning; // Keep trying if running, fail start if not
+                    }
+                    currentMarket = marketInfo; // Store { id, type }
+                }
+
+                // 2. Get Current Price (uses new reliable function aware of type)
+                const currentPriceData = await getCurrentPrice(currentMarket.id, currentMarket.type); // Pass type
+                 if (!currentPriceData) {
+                    logMessage("Could not fetch current price.", "warn");
+                    return isBotRunning; // Keep trying if running, fail start if not
+                }
+                const currentPrice = currentPriceData.price; // Price of A in terms of B
+                logMessage(`Current price: 1 ${tokenASymbol.value.trim().toUpperCase()} = ${currentPrice.toFixed(8)} ${tokenBSymbol.value.trim().toUpperCase()}`, "info");
+                lastPrices = [{ close: currentPrice }]; // Store for PnL
+
+                // 3. Run selected strategy
+                const selectedStrategy = strategySelect.value; 
+                if (selectedStrategy === 'price-range') { /* ... unchanged ... */ 
+                    const lowerBuyPrice = parseFloat(priceLower.value); const upperSellPrice = parseFloat(priceUpper.value); if (isNaN(lowerBuyPrice) || isNaN(upperSellPrice) || lowerBuyPrice <= 0 || upperSellPrice <= 0) { logMessage("Price Range: Please set a valid lower and upper price.", "warn"); return true; } if (currentPrice <= lowerBuyPrice) { logMessage(`PRICE BUY TRIGGER! Price (${currentPrice.toFixed(8)}) <= ${lowerBuyPrice}.`, "success"); await executeSwap('buy'); } else if (currentPrice >= upperSellPrice) { logMessage(`PRICE SELL TRIGGER! Price (${currentPrice.toFixed(8)}) >= ${upperSellPrice}.`, "success"); await executeSwap('sell'); } else { logMessage(`Price Range: No trigger. Price is between ${lowerBuyPrice} and ${upperSellPrice}.`, "info"); } 
+                } else if (selectedStrategy === 'rsi') { 
+                    const prices = await getPriceHistory(currentMarket.id); // Pass ID just in case
+                    if (!prices || prices.length < 14) { 
+                        logMessage("RSI: Not enough historical data or history fetch failed. Skipping RSI check.", "warn"); 
+                    } else { /* ... RSI logic unchanged ... */ 
+                        const closePrices = prices.map(p => p.close); const rsiValues = tw.rsi(closePrices, 14); const currentRSI = rsiValues[rsiValues.length - 1]; logMessage(`Current RSI: ${currentRSI.toFixed(2)}`, "info"); const buyLevel = parseFloat(rsiBuy.value); const sellLevel = parseFloat(rsiSell.value); if (currentRSI <= buyLevel) { logMessage(`RSI BUY TRIGGER! RSI (${currentRSI.toFixed(2)}) <= ${buyLevel}.`, "success"); await executeSwap('buy'); } else if (currentRSI >= sellLevel) { logMessage(`RSI SELL TRIGGER! RSI (${currentRSI.toFixed(2)}) >= ${sellLevel}.`, "success"); await executeSwap('sell'); } else { logMessage(`RSI: No trigger. RSI is between ${buyLevel} and ${sellLevel}.`, "info"); } 
+                    } 
+                } 
+                return true; 
+             } catch (e) { 
+                logMessage(`Error in bot logic: ${e.message}`, "error"); 
+                // Reset market info on error
+                currentMarket = { id: null, type: null }; 
+                marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; 
+                return false; 
+             } 
         }
         
         /**
          * ROBUST: Finds market ID, prioritizing Swap Pools, rejecting ID 0.
+         * Returns { id: number, type: 'swap' | 'spot' } or null.
          */
         async function findMarketId() {
-            // No need to check cache here, startBot resets marketId forcing a fresh check
-            
             const tokenA = tokenAContract.value.trim().toLowerCase(); // Use lowercase
             const tokenB = tokenBContract.value.trim().toLowerCase();
-            if (!tokenA || !tokenB) {
-                 logMessage("Token contracts cannot be empty.", "error");
-                 return null;
-            }
+            if (!tokenA || !tokenB) { logMessage("Token contracts cannot be empty.", "error"); return null; }
             logMessage(`Searching for market ${tokenA} / ${tokenB}...`, "system");
 
-            let foundId = null;
-            let base = null;
-            let quote = null;
-
-            // --- PRIORITY CHANGE: Check SWAP POOLS FIRST ---
+            let foundMarketInfo = null; // Will store { id, type, base, quote }
+            
+            // 1. Try SWAP pools FIRST
             try {
                 const url = `${ALCOR_API}/swap/pools`; 
                 const response = await fetch(url);
                 if (!response.ok) throw new Error(`Swap API failed (${response.status})`);
-                
                 const swapMarkets = await response.json();
                 const foundSwapMarket = swapMarkets.find(m =>
                     (m.tokenA.contract === tokenA && m.tokenB.contract === tokenB) ||
                     (m.tokenA.contract === tokenB && m.tokenB.contract === tokenA)
                 );
                 
-                // CRITICAL: Explicitly check if ID is not 0
                 if (foundSwapMarket && foundSwapMarket.id > 0) { 
                     logMessage(`Found SWAP market. ID: ${foundSwapMarket.id}`, "success");
-                    foundId = foundSwapMarket.id;
-                    // Determine base/quote based on the order they appeared in the found market
+                    let base, quote;
                     if (foundSwapMarket.tokenA.contract === tokenA) {
-                        base = foundSwapMarket.tokenA.contract; 
-                        quote = foundSwapMarket.tokenB.contract;
+                        base = foundSwapMarket.tokenA.contract; quote = foundSwapMarket.tokenB.contract;
                     } else {
-                        base = foundSwapMarket.tokenB.contract;
-                        quote = foundSwapMarket.tokenA.contract;
+                        base = foundSwapMarket.tokenB.contract; quote = foundSwapMarket.tokenA.contract;
                     }
+                    foundMarketInfo = { id: foundSwapMarket.id, type: 'swap', base: base, quote: quote };
                 } else if (foundSwapMarket && foundSwapMarket.id === 0) {
                      logMessage(`Found SWAP market but ID is 0. Treating as invalid.`, "warn");
                 } else {
                      logMessage("Did not find a valid (>0) SWAP market.", "info");
                 }
-            } catch (e) {
-                logMessage(`Could not check swap markets: ${e.message}`, "warn");
-            }
+            } catch (e) { logMessage(`Could not check swap markets: ${e.message}`, "warn"); }
 
-            // --- FALLBACK: Check SPOT markets ONLY if Swap wasn't found ---
-            if (!foundId) {
+            // 2. Try SPOT markets ONLY if Swap wasn't found
+            if (!foundMarketInfo) {
                 logMessage("No valid SWAP pool found, checking SPOT markets...", "system");
                 try {
                     const url = `${ALCOR_API}/markets`; 
                     const response = await fetch(url);
                     if (!response.ok) throw new Error(`Spot API failed (${response.status})`);
-                    
                     const spotMarkets = await response.json();
                     const foundSpotMarket = spotMarkets.find(m =>
                         (m.base_token.contract === tokenA && m.quote_token.contract === tokenB) ||
                         (m.base_token.contract === tokenB && m.quote_token.contract === tokenA)
                     );
                     
-                    if (foundSpotMarket && foundSpotMarket.id > 0) { // Check for valid ID > 0
+                    if (foundSpotMarket && foundSpotMarket.id > 0) { 
                         logMessage(`Found SPOT market (using as fallback). ID: ${foundSpotMarket.id}`, "success");
-                        foundId = foundSpotMarket.id;
-                        base = foundSpotMarket.base_token.contract;
-                        quote = foundSpotMarket.quote_token.contract;
+                         foundMarketInfo = { 
+                            id: foundSpotMarket.id, 
+                            type: 'spot', 
+                            base: foundSpotMarket.base_token.contract, 
+                            quote: foundSpotMarket.quote_token.contract 
+                        };
                     } else {
                          logMessage("Did not find a valid (>0) SPOT market either.", "info");
                     }
-                } catch (e) {
-                    logMessage(`Could not check spot markets: ${e.message}`, "warn");
-                }
+                } catch (e) { logMessage(`Could not check spot markets: ${e.message}`, "warn"); }
             }
             
-            // 3. Validate and Store Result
-            if (foundId && base && quote) {
-                marketConfig.baseContract = base;
-                marketConfig.quoteContract = quote;
-                marketConfig.isInverted = (base !== tokenA); // Check if market base is our Token B
-                
-                logMessage(`Validated Market ID: ${foundId}. Base: ${base}, Quote: ${quote}, Inverted: ${marketConfig.isInverted}`, "system");
-                return foundId; // Return the validated ID
+            // 3. Validate and Store Result globally
+            if (foundMarketInfo) {
+                marketConfig.baseContract = foundMarketInfo.base;
+                marketConfig.quoteContract = foundMarketInfo.quote;
+                marketConfig.isInverted = (foundMarketInfo.base !== tokenA); 
+                logMessage(`Validated Market: ID ${foundMarketInfo.id} (${foundMarketInfo.type}). Base: ${marketConfig.baseContract}, Quote: ${marketConfig.quoteContract}, Inverted: ${marketConfig.isInverted}`, "system");
+                return { id: foundMarketInfo.id, type: foundMarketInfo.type }; // Return validated info
             } else {
                 logMessage(`No valid market found for ${tokenA} / ${tokenB} on Spot or Swap.`, "error");
                 return null; // Explicitly return null if no valid market found
@@ -522,42 +462,90 @@
         }
 
         /**
-         * ROBUST: Gets the current price using the /markets/{id} endpoint.
+         * ROBUST: Gets current price based on market type ('swap' or 'spot').
          * Returns { price: number } (price of A in terms of B) or null.
          */
-        async function getCurrentPrice() { /* ... content unchanged ... */
-            if (!marketId) { logMessage("Cannot get current price without a valid market ID.", "error"); return null; }
-            const url = `${ALCOR_API}/markets/${marketId}`;
-            logMessage(`Fetching current price for market ${marketId}...`, "system");
+        async function getCurrentPrice(marketId, marketType) {
+            if (!marketId || !marketType) {
+                logMessage("Cannot get current price without market ID and type.", "error");
+                return null;
+            }
+
+            logMessage(`Fetching current price for market ${marketId} (type: ${marketType})...`, "system");
+            const tokenA = tokenAContract.value.trim().toLowerCase(); // Needed for swap price calculation
+
             try {
-                const response = await fetch(url);
-                if (!response.ok) { throw new Error(`Market API failed (${response.status})`); }
-                const marketData = await response.json();
-                if (!marketData || typeof marketData.last_price === 'undefined') { throw new Error("Market data received is invalid or missing 'last_price'."); }
-                let price = parseFloat(marketData.last_price);
-                if (marketConfig.isInverted) { 
-                    if (price === 0) { logMessage("Warning: Inverted price is 0, cannot calculate reciprocal. Using 0.", "warn"); return { price: 0 }; }
-                    logMessage("Market is inverted relative to input. Calculating reciprocal price.", "system");
-                    return { price: 1 / price };
+                let priceRaw; // Price of BASE in terms of QUOTE
+
+                if (marketType === 'spot') {
+                    const url = `${ALCOR_API}/markets/${marketId}`;
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`Spot Market API failed (${response.status})`);
+                    const marketData = await response.json();
+                    if (!marketData || typeof marketData.last_price === 'undefined') throw new Error("Spot market data invalid.");
+                    priceRaw = parseFloat(marketData.last_price);
+                    logMessage(`Raw spot price (Base/Quote): ${priceRaw}`, "system");
+
+                } else if (marketType === 'swap') {
+                    // Fetch all pools and find the right one
+                    // TODO: Check if Alcor has a /swap/pools/{id} endpoint for efficiency
+                    const url = `${ALCOR_API}/swap/pools`;
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`Swap Pools API failed (${response.status})`);
+                    const swapPools = await response.json();
+                    const pool = swapPools.find(p => p.id === marketId);
+                    if (!pool) throw new Error(`Swap pool ${marketId} not found in list.`);
+
+                    // Extract reserves (remove symbol, parse float)
+                    const reserveA = parseFloat(pool.reserveA.split(' ')[0]);
+                    const reserveB = parseFloat(pool.reserveB.split(' ')[0]);
+                    if (isNaN(reserveA) || isNaN(reserveB)) throw new Error("Invalid reserve values in pool data.");
+
+                    logMessage(`Swap Pool Reserves: A=${reserveA}, B=${reserveB}`, "system");
+
+                    // Determine price based on which token is A and B in the pool response
+                    if (pool.tokenA.contract === marketConfig.baseContract) {
+                        // Pool A is Base, Pool B is Quote
+                        if (reserveA === 0) throw new Error("Base reserve is 0, cannot calculate swap price.");
+                        priceRaw = reserveB / reserveA; // Price = Quote / Base
+                    } else {
+                         // Pool B is Base, Pool A is Quote
+                         if (reserveB === 0) throw new Error("Base reserve is 0, cannot calculate swap price.");
+                         priceRaw = reserveA / reserveB; // Price = Quote / Base
+                    }
+                    logMessage(`Raw swap price (Base/Quote): ${priceRaw}`, "system");
                 } else {
-                    return { price: price };
+                    throw new Error(`Unknown market type: ${marketType}`);
                 }
-            } catch (e) { logMessage(`Failed to get current price: ${e.message}`, "error"); return null; }
+
+                // Now handle inversion based on marketConfig (set by findMarketId)
+                if (marketConfig.isInverted) { 
+                    // Base token is NOT our Token A. We need 1 / priceRaw.
+                    if (priceRaw === 0) { logMessage("Warning: Raw price is 0, cannot calculate reciprocal. Using 0.", "warn"); return { price: 0 }; }
+                    logMessage("Market is inverted relative to input. Calculating reciprocal price.", "system");
+                    return { price: 1 / priceRaw };
+                } else {
+                    // Base token IS our Token A. priceRaw is correct.
+                    return { price: priceRaw };
+                }
+
+            } catch (e) {
+                logMessage(`Failed to get current price: ${e.message}`, "error");
+                return null;
+            }
         }
 
 
         /**
          * Gets price history from Alcor API (Used ONLY by RSI strategy now)
-         * Returns array of {time, open, high, low, close, volume} or null on failure.
-         * Handles inversion based on marketConfig.
          */
-        async function getPriceHistory() { /* ... content unchanged ... */
-            if (!marketId) { logMessage("Cannot get price history without market ID.", "warn"); return null; }
-            const timeframe = timeframeSelect.value; const now = Math.floor(Date.now() / 1000); const from = now - (60 * parseInt(timeframe) * 50); const resolution = timeframe; const url = `${ALCOR_API}/charts/history?market=${marketId}&resolution=${resolution}&from=${from}&to=${now}`;
-            logMessage(`Fetching price history for RSI (ID: ${marketId}, TF: ${timeframe}m)...`, "system");
+        async function getPriceHistory(marketIdToFetch) { /* ... content largely unchanged, ensures it uses the correct marketId ... */
+            if (!marketIdToFetch) { logMessage("Cannot get price history without market ID.", "warn"); return null; }
+            const timeframe = timeframeSelect.value; const now = Math.floor(Date.now() / 1000); const from = now - (60 * parseInt(timeframe) * 50); const resolution = timeframe; const url = `${ALCOR_API}/charts/history?market=${marketIdToFetch}&resolution=${resolution}&from=${from}&to=${now}`;
+            logMessage(`Fetching price history for RSI (ID: ${marketIdToFetch}, TF: ${timeframe}m)...`, "system");
             try {
                 const response = await fetch(url);
-                if (!response.ok) { if (response.status === 404) { logMessage(`No price history found for market ${marketId} at ${timeframe}m resolution.`, "warn"); return null; } throw new Error(`History API failed (${response.status})`); }
+                if (!response.ok) { if (response.status === 404) { logMessage(`No price history found for market ${marketIdToFetch} at ${timeframe}m resolution.`, "warn"); return null; } throw new Error(`History API failed (${response.status})`); }
                 const data = await response.json(); if (!data || data.length === 0) { logMessage("No price history data returned from Alcor.", "warn"); return null; }
                 if (marketConfig.isInverted) {
                      logMessage("History: Market is inverted. Inverting prices.", "system");
