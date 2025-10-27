@@ -9,7 +9,6 @@
     <script src="trendyways.min.js"></script>
 
     <style>
-        /* CSS Styles remain unchanged - Omitted for brevity */
         :root{--bg-primary:#1a1c23;--bg-secondary:#242731;--bg-tertiary:#3a3f4c;--border-color:#4a5160;--text-primary:#e0e2e8;--text-secondary:#a0a6b3;--text-cyan:#22d3ee;--text-green:#34d399;--text-red:#f87171;--text-yellow:#facc15;--text-blue:#60a5fa;--accent-cyan:#06b6d4;--accent-cyan-hover:#0891b2;--accent-green:#10b981;--accent-green-hover:#059669;--accent-red:#ef4444;--accent-red-hover:#dc2626;--accent-blue:#3b82f6;--accent-blue-hover:#2563eb;--shadow-color:rgba(0,0,0,0.2);--font-sans:'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;--font-mono:'Courier New', Courier, monospace;}*{box-sizing:border-box;}body{background-color:var(--bg-primary);color:var(--text-primary);font-family:var(--font-sans);margin:0;padding:1rem;min-height:100vh;}@media (min-width: 768px){body{padding:2rem;}}.container{max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:1.5rem;}h1{font-size:2.25rem;font-weight:700;text-align:center;margin:0 0 1rem 0;color:var(--text-cyan);}h2{font-size:1.5rem;font-weight:600;margin:0 0 1rem 0;border-bottom:1px solid var(--border-color);padding-bottom:0.5rem;color:var(--text-primary);}.app-section{background-color:var(--bg-secondary);padding:1.5rem;border-radius:8px;box-shadow:0 4px 12px var(--shadow-color);}.alert{padding:1rem;border-radius:6px;border-left:4px solid;}.alert-critical{background-color:#450a0a;border-color:var(--text-red);color:#fecaca;}.alert-critical p{margin:0;}.alert-critical strong{color:white;font-weight:600;}fieldset{border:1px solid var(--border-color);border-radius:6px;padding:1rem 1.5rem;margin-bottom:1rem;}legend{padding:0 0.5rem;font-weight:600;color:var(--text-primary);font-size:1.1rem;}.form-grid{display:grid;grid-template-columns:repeat(1, 1fr);gap:1rem;}@media (min-width: 768px){.form-grid-cols-3{grid-template-columns:repeat(3, 1fr);}.form-grid-cols-2{grid-template-columns:repeat(2, 1fr);}}.form-group{display:flex;flex-direction:column;gap:0.25rem;}label{display:block;font-size:0.875rem;font-weight:500;color:var(--text-secondary);}label .default-text{font-size:0.75rem;color:var(--text-cyan);margin-left:0.25rem;}input[type="text"], input[type="number"], select{background-color:var(--bg-tertiary);border:1px solid var(--border-color);color:var(--text-primary);border-radius:6px;padding:0.75rem 1rem;width:100%;transition:border-color 0.2s, box-shadow 0.2s;font-size:0.9rem;}input[type="text"]:focus, input[type="number"]:focus, select:focus{outline:none;border-color:var(--accent-cyan);box-shadow:0 0 0 3px rgba(6, 182, 212, 0.3);}.note{font-size:0.75rem;color:var(--text-secondary);margin-top:0.5rem;}button{font-weight:600;padding:0.75rem 1rem;border-radius:6px;cursor:pointer;border:none;transition:background-color 0.2s, opacity 0.2s;width:100%;font-size:1rem;}button.primary{background-color:var(--accent-cyan);color:var(--bg-primary);}button.primary:hover{background-color:var(--accent-cyan-hover);}button.secondary{background-color:var(--bg-tertiary);color:var(--text-primary);width:auto;font-size:0.8rem;font-weight:500;padding:0.25rem 0.75rem;}button.secondary:hover{background-color:var(--border-color);}button.start{background-color:var(--accent-green);color:white;}button.start:hover{background-color:var(--accent-green-hover);}button.stop{background-color:var(--accent-red);color:white;}button.stop:hover{background-color:var(--accent-red-hover);}button:disabled{background-color:var(--bg-tertiary);color:var(--text-secondary);cursor:not-allowed;opacity:0.7;}.button-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}.status-grid{margin-top:1rem;display:flex;flex-direction:column;gap:0.75rem;}.status-item{display:flex;justify-content:space-between;align-items:center;}.status-item .label{color:var(--text-secondary);font-size:0.9rem;}.status-item .value{font-weight:700;font-size:1rem;}.status-item .value-group{display:flex;align-items:center;gap:0.5rem;}#user-account{color:var(--text-green);}#pnl-display.positive{color:var(--text-green);}#pnl-display.negative{color:var(--text-red);}#pnl-display.neutral{color:var(--text-secondary);}.bot-status-container{text-align:center;}#bot-status{font-weight:700;font-size:1.1rem;}#bot-status.running{color:var(--text-green);}#bot-status.stopped{color:var(--text-red);}#log-output{font-family:var(--font-mono);max-height:400px;overflow-y:auto;background-color:var(--bg-primary);border:1px solid var(--border-color);padding:1rem;border-radius:6px;font-size:0.875rem;}#log-output p{margin:0 0 0.35rem 0;border-bottom:1px solid var(--bg-tertiary);padding-bottom:0.35rem;word-break:break-all;line-height:1.6;}#log-output p:last-child{border-bottom:none;margin-bottom:0;}#log-output .log-time{color:var(--text-secondary);margin-right:0.5rem;}#log-output .log-info{color:var(--text-primary);}#log-output .log-error{color:var(--text-red);}#log-output .log-success{color:var(--text-green);}#log-output .log-warn{color:var(--text-yellow);}#log-output .log-system{color:var(--text-cyan);}#log-output .log-idle{color:var(--text-secondary);}.strategy-settings.hidden{display:none;}hr{border:none;border-top:1px solid var(--border-color);margin:1.5rem 0;}.modal-overlay{display:none;position:fixed;inset:0;background-color:rgba(0,0,0,0.75);align-items:center;justify-content:center;z-index:50;padding:1rem;}.modal-overlay.visible{display:flex;}.modal-content{background-color:var(--bg-secondary);width:100%;max-width:500px;padding:2rem;border-radius:8px;box-shadow:0 10px 30px var(--shadow-color);position:relative;}.modal-close-btn{position:absolute;top:0.75rem;right:1.25rem;color:var(--text-secondary);font-size:2.5rem;font-weight:300;background:none;border:none;cursor:pointer;padding:0;width:auto;line-height:1;}.modal-close-btn:hover{color:var(--text-primary);}.modal-content h2{text-align:center;color:var(--text-cyan);margin-top:0;margin-bottom:1.5rem;border:none;}.modal-summary{background-color:var(--bg-tertiary);padding:1.5rem;border-radius:6px;margin-bottom:1.5rem;display:flex;flex-direction:column;gap:0.75rem;}.modal-summary-item{display:flex;justify-content:space-between;align-items:center;}.modal-summary-item .label{color:var(--text-secondary);}.modal-summary-item .value{font-weight:600;}#share-wallet{color:var(--text-cyan);}#share-spent{color:var(--text-red);}#share-received{color:var(--text-green);}.modal-summary hr{margin:0.5rem 0;}.modal-summary-total{font-size:1.25rem;font-weight:700;}#share-pnl.positive{color:var(--text-green);}#share-pnl.negative{color:var(--text-red);}#share-pnl.neutral{color:var(--text-secondary);}#copy-share-btn{background-color:var(--accent-cyan);color:var(--bg-primary);}#copy-share-btn:hover{background-color:var(--accent-cyan-hover);}#share-text{position:absolute;left:-9999px;opacity:0;}
     </style>
 </head>
@@ -205,7 +204,6 @@
         let shareModal, sharePnlBtn, closeShareModalBtn, shareWallet, shareSpent, shareReceived, sharePnl, copyShareBtn, shareText;
         
         // [ --- MODIFIED: DOM Elements --- ]
-        // Removed old token input variables
         let selectTokenA, selectTokenB, addTokenBtn; // New selectors
         let addTokenModal, closeAddTokenModalBtn, saveTokenBtn, modalTokenSymbol, modalTokenContract, modalTokenDecimals; // New modal elements
         
@@ -257,9 +255,9 @@
         }
 
         // --- PnL Functions ---
-        function loadPnlFromStorage() { /* ... content unchanged ... */ const savedData = localStorage.getItem('waxTraderPnl'); if (savedData) { pnlData = JSON.parse(savedData); logMessage("Loaded PnL data from storage.", "system"); } else { logMessage("No PnL data found, starting fresh.", "system"); } updatePnlDisplay(); }
-        function savePnlToStorage() { /* ... content unchanged ... */ localStorage.setItem('waxTraderPnl', JSON.stringify(pnlData)); }
-        function updatePnl(direction, amountB) { /* ... content unchanged ... */ if (direction === 'buy') { pnlData.totalSpentTokenB += amountB; } else if (direction === 'sell') { pnlData.totalReceivedTokenB += amountB; } pnlData.pnl = pnlData.totalReceivedTokenB - pnlData.totalSpentTokenB; savePnlToStorage(); updatePnlDisplay(); logMessage(`PnL updated: ${pnlData.pnl.toFixed(4)}`, "success"); }
+        function loadPnlFromStorage() { const savedData = localStorage.getItem('waxTraderPnl'); if (savedData) { pnlData = JSON.parse(savedData); logMessage("Loaded PnL data from storage.", "system"); } else { logMessage("No PnL data found, starting fresh.", "system"); } updatePnlDisplay(); }
+        function savePnlToStorage() { localStorage.setItem('waxTraderPnl', JSON.stringify(pnlData)); }
+        function updatePnl(direction, amountB) { if (direction === 'buy') { pnlData.totalSpentTokenB += amountB; } else if (direction === 'sell') { pnlData.totalReceivedTokenB += amountB; } pnlData.pnl = pnlData.totalReceivedTokenB - pnlData.totalSpentTokenB; savePnlToStorage(); updatePnlDisplay(); logMessage(`PnL updated: ${pnlData.pnl.toFixed(4)}`, "success"); }
         
         // [ --- MODIFIED: Uses new token selector --- ]
         function updatePnlDisplay() {
@@ -288,16 +286,16 @@
             shareText.value = textToCopy.trim(); 
             shareModal.classList.add('visible'); 
         }
-        function closeShareModal() { /* ... content unchanged ... */ shareModal.classList.remove('visible'); }
-        function copyShareText() { /* ... content unchanged ... */ shareText.select(); shareText.setSelectionRange(0, 99999); try { document.execCommand('copy'); copyShareBtn.textContent = 'Copied!'; setTimeout(() => { copyShareBtn.textContent = 'Copy Sharable Text'; }, 2000); } catch (err) { logMessage('Failed to copy share text.', 'error'); } }
+        function closeShareModal() { shareModal.classList.remove('visible'); }
+        function copyShareText() { shareText.select(); shareText.setSelectionRange(0, 99999); try { document.execCommand('copy'); copyShareBtn.textContent = 'Copied!'; setTimeout(() => { copyShareBtn.textContent = 'Copy Sharable Text'; }, 2000); } catch (err) { logMessage('Failed to copy share text.', 'error'); } }
 
         // --- Core Functions ---
-        function logMessage(message, level = "info") { /* ... content unchanged ... */ if (!logOutput) { console.log(`[${level.toUpperCase()}] ${message}`); return; } const p = document.createElement('p'); const timestamp = new Date().toLocaleTimeString(); let levelClass = "log-info"; if (level === "error") levelClass = "log-error"; if (level === "success") levelClass = "log-success"; if (level === "warn") levelClass = "log-warn"; if (level === "system") levelClass = "log-system"; p.className = levelClass; p.innerHTML = `<span class="log-time">[${timestamp}]</span> ${message}`; const placeholder = logOutput.querySelector('.log-idle'); if (placeholder) placeholder.remove(); logOutput.prepend(p); }
-        function toggleStrategySettings() { /* ... content unchanged ... */ const selectedStrategy = strategySelect.value; rsiSettings.classList.toggle('hidden', selectedStrategy !== 'rsi'); priceRangeSettings.classList.toggle('hidden', selectedStrategy !== 'price-range'); }
+        function logMessage(message, level = "info") { if (!logOutput) { console.log(`[${level.toUpperCase()}] ${message}`); return; } const p = document.createElement('p'); const timestamp = new Date().toLocaleTimeString(); let levelClass = "log-info"; if (level === "error") levelClass = "log-error"; if (level === "success") levelClass = "log-success"; if (level === "warn") levelClass = "log-warn"; if (level === "system") levelClass = "log-system"; p.className = levelClass; p.innerHTML = `<span class="log-time">[${timestamp}]</span> ${message}`; const placeholder = logOutput.querySelector('.log-idle'); if (placeholder) placeholder.remove(); logOutput.prepend(p); }
+        function toggleStrategySettings() { const selectedStrategy = strategySelect.value; rsiSettings.classList.toggle('hidden', selectedStrategy !== 'rsi'); priceRangeSettings.classList.toggle('hidden', selectedStrategy !== 'price-range'); }
 
         // --- Initialization ---
-        window.addEventListener('load', () => { /* ... content unchanged ... */ assignDomElements(); logMessage("Page loaded. Waiting for required libraries...", "system"); waitForLibraries(); });
-        function waitForLibraries() { /* ... content unchanged ... */ let interval = setInterval(() => { if (typeof waxjs !== 'undefined' && typeof window.tw !== 'undefined') { clearInterval(interval); logMessage("Libraries loaded successfully.", "success"); initializeApp(); } }, 100); setTimeout(() => { clearInterval(interval); if (typeof waxjs === 'undefined' || typeof window.tw === 'undefined') { let errorMsg = "FATAL: Libraries failed to load after 10 seconds. "; if (typeof waxjs === 'undefined') errorMsg += "waxjs failed. "; if (typeof window.tw === 'undefined') errorMsg += "trendyways (tw) failed. "; logMessage(errorMsg + "Check script tags and file locations.", "error"); } }, 10000); }
+        window.addEventListener('load', () => { assignDomElements(); logMessage("Page loaded. Waiting for required libraries...", "system"); waitForLibraries(); });
+        function waitForLibraries() { let interval = setInterval(() => { if (typeof waxjs !== 'undefined' && typeof window.tw !== 'undefined') { clearInterval(interval); logMessage("Libraries loaded successfully.", "success"); initializeApp(); } }, 100); setTimeout(() => { clearInterval(interval); if (typeof waxjs === 'undefined' || typeof window.tw === 'undefined') { let errorMsg = "FATAL: Libraries failed to load after 10 seconds. "; if (typeof waxjs === 'undefined') errorMsg += "waxjs failed. "; if (typeof window.tw === 'undefined') errorMsg += "trendyways (tw) failed. "; logMessage(errorMsg + "Check script tags and file locations.", "error"); } }, 10000); }
         
         // [ --- MODIFIED: `initializeApp` --- ]
         function initializeApp() {
@@ -331,7 +329,7 @@
         }
 
         // --- Login ---
-        async function login() { /* ... content unchanged ... */ try { logMessage("Attempting login...", "system"); userAccount = await wax.login(); userAccountDisplay.textContent = userAccount; loginBtn.disabled = true; loginBtn.textContent = "Logged In"; logMessage(`Logged in as: ${userAccount}`, "success"); } catch (e) { logMessage(`Login failed: ${e.message}`, "error"); } }
+        async function login() { try { logMessage("Attempting login...", "system"); userAccount = await wax.login(); userAccountDisplay.textContent = userAccount; loginBtn.disabled = true; loginBtn.textContent = "Logged In"; logMessage(`Logged in as: ${userAccount}`, "success"); } catch (e) { logMessage(`Login failed: ${e.message}`, "error"); } }
 
 
         // [ --- NEW: Token Management Functions --- ]
@@ -342,8 +340,20 @@
         function loadTokenList() {
             const savedTokens = localStorage.getItem('waxTraderTokens');
             if (savedTokens) {
-                tokenList = JSON.parse(savedTokens);
-                logMessage("Loaded token list from storage.", "system");
+                try {
+                    tokenList = JSON.parse(savedTokens);
+                    if (!Array.isArray(tokenList)) { // Basic validation
+                         tokenList = [...DEFAULT_TOKENS];
+                         logMessage("Token list in storage was corrupted. Loading defaults.", "warn");
+                         saveTokenList();
+                    } else {
+                        logMessage("Loaded token list from storage.", "system");
+                    }
+                } catch(e) {
+                     tokenList = [...DEFAULT_TOKENS];
+                     logMessage("Failed to parse token list. Loading defaults.", "warn");
+                     saveTokenList();
+                }
             } else {
                 tokenList = [...DEFAULT_TOKENS];
                 logMessage("No token list found, loading defaults.", "system");
@@ -378,15 +388,27 @@
             }
 
             tokenList.forEach((token, index) => {
-                const optionHTML = `<option value="${index}">${token.symbol.toUpperCase()} (${token.contract})</option>`;
-                selectTokenA.insertAdjacentHTML('beforeend', optionHTML);
-                selectTokenB.insertAdjacentHTML('beforeend', optionHTML);
+                // Check if token is valid before adding
+                if (token && token.symbol && token.contract) {
+                    const optionHTML = `<option value="${index}">${token.symbol.toUpperCase()} (${token.contract})</option>`;
+                    selectTokenA.insertAdjacentHTML('beforeend', optionHTML);
+                    selectTokenB.insertAdjacentHTML('beforeend', optionHTML);
+                }
             });
 
             // Restore previous selection if possible, otherwise set defaults
             selectTokenA.value = (currentA && tokenList[currentA]) ? currentA : "1"; // Default to TLM (index 1)
             selectTokenB.value = (currentB && tokenList[currentB])? currentB : "0"; // Default to WAX (index 0)
             
+            // Handle edge case where defaults don't exist
+             if (tokenList.length > 1) {
+                if (selectTokenA.value === "") selectTokenA.value = "1";
+                if (selectTokenB.value === "") selectTokenB.value = "0";
+            } else if (tokenList.length === 1) {
+                 if (selectTokenA.value === "") selectTokenA.value = "0";
+                 if (selectTokenB.value === "") selectTokenB.value = "0";
+            }
+
             updatePnlDisplay(); // Ensure PnL label is correct
         }
 
@@ -455,8 +477,8 @@
 
 
         // --- Bot Control ---
-        async function startBot() { /* ... content unchanged ... */ if (!userAccount) { logMessage("Please log in before starting the bot.", "error"); return; } if (isBotRunning) return; currentMarket = { id: null, type: null }; marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; logMessage("Bot starting... Running first check.", "system"); const successfulFirstRun = await runBotLogic(); if (successfulFirstRun) { isBotRunning = true; botStatusDisplay.textContent = "RUNNING"; botStatusDisplay.className = "running"; startBtn.disabled = true; stopBtn.disabled = false; logMessage("Bot started successfully!", "success"); const checkInterval = parseInt(timeframeSelect.value) * 60 * 1000; botInterval = setInterval(runBotLogic, Math.max(60000, checkInterval)); } else { logMessage("Bot failed to start. Check contracts, symbols, and Alcor API status.", "error"); } }
-        function stopBot() { /* ... content unchanged ... */ if (!isBotRunning) return; isBotRunning = false; clearInterval(botInterval); currentMarket = { id: null, type: null }; marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; botStatusDisplay.textContent = "STOPPED"; botStatusDisplay.className = "stopped"; startBtn.disabled = false; stopBtn.disabled = true; logMessage("Bot stopped.", "system"); }
+        async function startBot() { if (!userAccount) { logMessage("Please log in before starting the bot.", "error"); return; } if (isBotRunning) return; currentMarket = { id: null, type: null }; marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; logMessage("Bot starting... Running first check.", "system"); const successfulFirstRun = await runBotLogic(); if (successfulFirstRun) { isBotRunning = true; botStatusDisplay.textContent = "RUNNING"; botStatusDisplay.className = "running"; startBtn.disabled = true; stopBtn.disabled = false; logMessage("Bot started successfully!", "success"); const checkInterval = parseInt(timeframeSelect.value) * 60 * 1000; botInterval = setInterval(runBotLogic, Math.max(60000, checkInterval)); } else { logMessage("Bot failed to start. Check contracts, symbols, and Alcor API status.", "error"); } }
+        function stopBot() { if (!isBotRunning) return; isBotRunning = false; clearInterval(botInterval); currentMarket = { id: null, type: null }; marketConfig = { baseContract: null, quoteContract: null, isInverted: false }; botStatusDisplay.textContent = "STOPPED"; botStatusDisplay.className = "stopped"; startBtn.disabled = false; stopBtn.disabled = true; logMessage("Bot stopped.", "system"); }
 
         // --- Core Bot Logic ---
         // [ --- MODIFIED: Uses new token selectors --- ]
@@ -466,7 +488,7 @@
             const tokenA = getSelectedTokenConfig('select-token-a');
             const tokenB = getSelectedTokenConfig('select-token-b');
             if (!tokenA || !tokenB) { 
-                logMessage("Invalid tokens selected. Bot logic cannot run.", "warn"); 
+                logMessage("Invalid tokens selected. Please add tokens if list is empty.", "warn"); 
                 return isBotRunning; // Return true if bot was already running, false if this was first run
             }
             
@@ -476,7 +498,7 @@
                 if (!currentMarket.id || !currentMarket.type) { 
                     const marketInfo = await findMarketId(); 
                     if (!marketInfo) { 
-                        logMessage("Market could not be found or validated. Check token contracts.", "error"); 
+                        logMessage("Market could not be found or validated. Check token selections.", "error"); 
                         return isBotRunning; 
                     } 
                     currentMarket = marketInfo; 
@@ -543,6 +565,7 @@
         /**
          * [ --- MODIFIED: `findMarketId` --- ]
          * Uses getSelectedTokenConfig() helper to get token data.
+         * THIS IS THE FUNCTION THAT PRIORITIZES SWAP (LP) MARKETS.
          */
         async function findMarketId() {
             // Get all details from the token selectors
@@ -568,7 +591,7 @@
 
             let foundMarketInfo = null; // Will store { id, type, base_contract, base_symbol, quote_contract, quote_symbol }
             
-            // 1. Try SWAP pools FIRST
+            // 1. Try SWAP pools FIRST (This is the LP check you want)
             try {
                 const url = `${ALCOR_API}/swap/pools`; 
                 const response = await fetch(url);
@@ -581,7 +604,7 @@
                 );
                 
                 if (foundSwapMarket && foundSwapMarket.id > 0) { 
-                    logMessage(`Found SWAP market. ID: ${foundSwapMarket.id}`, "success");
+                    logMessage(`Found SWAP market (LP). ID: ${foundSwapMarket.id}`, "success");
                     let base_contract, base_symbol, quote_contract, quote_symbol;
                     
                     if (foundSwapMarket.tokenA.contract === tokenA_contract && foundSwapMarket.tokenA.symbol === tokenA_symbol) {
@@ -595,13 +618,13 @@
                 } else if (foundSwapMarket && foundSwapMarket.id === 0) {
                      logMessage(`Found SWAP market but ID is 0. Treating as invalid.`, "warn");
                 } else {
-                     logMessage("Did not find a valid (>0) SWAP market matching both contract and symbol.", "info");
+                     logMessage("Did not find a valid (>0) SWAP market (LP) matching both contract and symbol.", "info");
                 }
-            } catch (e) { logMessage(`Could not check swap markets: ${e.message}`, "warn"); }
+            } catch (e) { logMessage(`Could not check swap (LP) markets: ${e.message}`, "warn"); }
 
-            // 2. Try SPOT markets ONLY if Swap wasn't found
+            // 2. Try SPOT markets ONLY if Swap (LP) wasn't found
             if (!foundMarketInfo) {
-                logMessage("No valid SWAP pool found, checking SPOT markets...", "system");
+                logMessage("No valid SWAP (LP) pool found, checking SPOT markets as fallback...", "system");
                 try {
                     const url = `${ALCOR_API}/markets`; 
                     const response = await fetch(url);
@@ -635,7 +658,7 @@
                 marketConfig.quoteContract = foundMarketInfo.quote_contract;
                 marketConfig.isInverted = !(foundMarketInfo.base_contract === tokenA_contract && foundMarketInfo.base_symbol === tokenA_symbol); 
                 
-                logMessage(`Validated Market: ID ${foundMarketInfo.id} (${foundMarketInfo.type}). Base: ${marketConfig.baseContract} (${foundMarketInfo.base_symbol}), Quote: ${marketConfig.quoteContract} (${foundMarketInfo.quote_symbol}), Inverted (relative to input A): ${marketConfig.isInverted}`, "system");
+                logMessage(`Validated Market: ID ${foundMarketInfo.id} (Type: ${foundMarketInfo.type}). Base: ${marketConfig.baseContract} (${foundMarketInfo.base_symbol}), Quote: ${marketConfig.quoteContract} (${foundMarketInfo.quote_symbol}), Inverted (relative to input A): ${marketConfig.isInverted}`, "system");
                 
                 return { id: foundMarketInfo.id, type: foundMarketInfo.type }; 
             } else {
@@ -647,7 +670,6 @@
 
         /**
          * ROBUST: Gets current price based on market type ('swap' or 'spot').
-         * (This function relies on `marketConfig` which is set by `findMarketId`, so no changes are needed here)
          */
         async function getCurrentPrice(marketId, marketType) {
             if (!marketId || !marketType) { logMessage("Cannot get current price without market ID and type.", "error"); return null; }
@@ -679,12 +701,12 @@
 
                     const reserveA = parseFloat(pool.reserveA.split(' ')[0]);
                     const reserveB = parseFloat(pool.reserveB.split(' ')[0]);
-                    
+
                     if (isNaN(reserveA) || isNaN(reserveB)) {
                          throw new Error(`Parsed reserve values are invalid (NaN) for pool ID ${marketId}.`);
                     }
 
-                    logMessage(`Swap Pool Reserves: A=${reserveA}, B=${reserveB}`, "system");
+                    logMessage(`Swap Pool (LP) Reserves: A=${reserveA}, B=${reserveB}`, "system");
 
                     if (pool.tokenA.contract === marketConfig.baseContract) {
                         if (reserveA === 0) { priceRaw = 0; logMessage("Warning: Base reserve (A) is 0. Price is effectively 0.", "warn"); } 
@@ -693,7 +715,7 @@
                          if (reserveB === 0) { priceRaw = 0; logMessage("Warning: Base reserve (B) is 0. Price is effectively 0.", "warn"); }
                          else { priceRaw = reserveA / reserveB; } // Price = Quote / Base
                     }
-                    logMessage(`Raw swap price (Base/Quote): ${priceRaw}`, "system");
+                    logMessage(`Raw swap (LP) price (Base/Quote): ${priceRaw}`, "system");
                 } else {
                     throw new Error(`Unknown market type: ${marketType}`);
                 }
@@ -715,9 +737,8 @@
 
         /**
          * Gets price history from Alcor API (Used ONLY by RSI strategy now)
-         * (This function relies on `marketConfig` which is set by `findMarketId`, so no changes are needed here)
          */
-        async function getPriceHistory(marketIdToFetch) { /* ... content unchanged ... */ if (!marketIdToFetch) { logMessage("Cannot get price history without market ID.", "warn"); return null; } const timeframe = timeframeSelect.value; const now = Math.floor(Date.now() / 1000); const from = now - (60 * parseInt(timeframe) * 50); const resolution = timeframe; const url = `${ALCOR_API}/charts/history?market=${marketIdToFetch}&resolution=${resolution}&from=${from}&to=${now}`; logMessage(`Fetching price history for RSI (ID: ${marketIdToFetch}, TF: ${timeframe}m)...`, "system"); try { const response = await fetch(url); if (!response.ok) { if (response.status === 404) { logMessage(`No price history found for market ${marketIdToFetch} at ${timeframe}m resolution.`, "warn"); return null; } throw new Error(`History API failed (${response.status})`); } const data = await response.json(); if (!data || data.length === 0) { logMessage("No price history data returned from Alcor.", "warn"); return null; } if (marketConfig.isInverted) { logMessage("History: Market is inverted. Inverting prices.", "system"); return data.map(d => ({ time: d.time, open: d.open ? 1 / d.open : 0, high: d.low ? 1 / d.low : 0, low: d.high ? 1 / d.high : 0, close: d.close ? 1 / d.close : 0, volume: d.volume * (d.close || 0) })).filter(d => isFinite(d.open) && isFinite(d.high) && isFinite(d.low) && isFinite(d.close)); } else { return data.map(d => ({ time: d.time, open: parseFloat(d.open || 0), high: parseFloat(d.high || 0), low: parseFloat(d.low || 0), close: parseFloat(d.close || 0), volume: parseFloat(d.volume || 0) })).filter(d => isFinite(d.open) && isFinite(d.high) && isFinite(d.low) && isFinite(d.close)); } } catch (e) { logMessage(`Failed to get price history: ${e.message}`, "error"); return null; } }
+        async function getPriceHistory(marketIdToFetch) { if (!marketIdToFetch) { logMessage("Cannot get price history without market ID.", "warn"); return null; } const timeframe = timeframeSelect.value; const now = Math.floor(Date.now() / 1000); const from = now - (60 * parseInt(timeframe) * 50); const resolution = timeframe; const url = `${ALCOR_API}/charts/history?market=${marketIdToFetch}&resolution=${resolution}&from=${from}&to=${now}`; logMessage(`Fetching price history for RSI (ID: ${marketIdToFetch}, TF: ${timeframe}m)...`, "system"); try { const response = await fetch(url); if (!response.ok) { if (response.status === 404) { logMessage(`No price history found for market ${marketIdToFetch} at ${timeframe}m resolution.`, "warn"); return null; } throw new Error(`History API failed (${response.status})`); } const data = await response.json(); if (!data || data.length === 0) { logMessage("No price history data returned from Alcor.", "warn"); return null; } if (marketConfig.isInverted) { logMessage("History: Market is inverted. Inverting prices.", "system"); return data.map(d => ({ time: d.time, open: d.open ? 1 / d.open : 0, high: d.low ? 1 / d.low : 0, low: d.high ? 1 / d.high : 0, close: d.close ? 1 / d.close : 0, volume: d.volume * (d.close || 0) })).filter(d => isFinite(d.open) && isFinite(d.high) && isFinite(d.low) && isFinite(d.close)); } else { return data.map(d => ({ time: d.time, open: parseFloat(d.open || 0), high: parseFloat(d.high || 0), low: parseFloat(d.low || 0), close: parseFloat(d.close || 0), volume: parseFloat(d.volume || 0) })).filter(d => isFinite(d.open) && isFinite(d.high) && isFinite(d.low) && isFinite(d.close)); } } catch (e) { logMessage(`Failed to get price history: ${e.message}`, "error"); return null; } }
 
         /**
          * [ --- MODIFIED: `executeSwap` --- ]
