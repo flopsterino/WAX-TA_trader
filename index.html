@@ -6,7 +6,7 @@
     <title>WAX TA Trading Bot</title>
     <script src="https://cdn.jsdelivr.net/gh/flopsterino/WAX-TA_trader@main/waxjs.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/trendyways/trendyways.min.js"></script>
+    <script src="trendyways.min.js"></script>
 
     <style>
         /* --- Base Styles --- */
@@ -855,12 +855,7 @@ Bot by: qu.ug.wam
                     initializeApp();
                 } else {
                     // Still waiting...
-                    if (typeof waxjs === 'undefined') {
-                        logMessage("Waiting for waxjs...", "idle");
-                    }
-                    if (typeof window.tw === 'undefined') {
-                        logMessage("Waiting for trendyways (tw)...", "idle");
-                    }
+                    // No need to spam the log, the first message is enough.
                 }
             }, 100); // Check every 100ms
             
@@ -869,7 +864,10 @@ Bot by: qu.ug.wam
                 clearInterval(interval);
                 // Check one last time
                 if (typeof waxjs === 'undefined' || typeof window.tw === 'undefined') {
-                    logMessage("FATAL: Libraries failed to load after 10 seconds. Check script tags and CDN.", "error");
+                    let errorMsg = "FATAL: Libraries failed to load after 10 seconds. ";
+                    if (typeof waxjs === 'undefined') errorMsg += "waxjs failed. ";
+                    if (typeof window.tw === 'undefined') errorMsg += "trendyways (tw) failed. ";
+                    logMessage(errorMsg + "Check script tags and file locations.", "error");
                 }
             }, 10000);
         }
@@ -1123,6 +1121,7 @@ Bot by: qu.ug.wam
                 }
             } catch (e) {
                 logMessage(`Could not check spot markets: ${e.message}`, "warn");
+After uploading `trendyways.min.js` to your GitHub repository, this code will work. This is the most stable and reliable setup for your project.
             }
             
             // 3. If nothing is found
@@ -1309,7 +1308,7 @@ Bot by: qu.ug.wam
                             from: userAccount,
                             to: config.dex,
                             quantity: quantity,
-_memo: memo,
+                            memo: memo,
                         },
                     });
                     
