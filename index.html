@@ -6,7 +6,7 @@
     <title>WAX TA Trading Bot</title>
     <script src="https://cdn.jsdelivr.net/gh/flopsterino/WAX-TA_trader@main/waxjs.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/technicalindicators@3.1.0/dist/browser.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/trendyways/trendyways.min.js" defer></script>
 
     <style>
         /* --- Base Styles --- */
@@ -646,11 +646,12 @@
         let marketId = null; // Will be fetched from API
         let marketConfig = { baseContract: null, quoteContract: null }; // To check for inverted price
         
-        let ta_lib = null; // Will be assigned on DOMContentLoaded
+        // FIX: Changed variable name for new library
+        let tw = null; // This will be our new library (trendyways)
+        
         const WAX_RPC_ENDPOINT = 'https://wax.greymass.com';
         const FEE_RECEIVER = 'qu.ug.wam';
         const FEE_PERCENT = 0.001; // 0.1%
-        // FIX: PROXY_URL constant removed
         const ALCOR_API = 'https://wax.alcor.exchange/api/v2';
 
 
@@ -859,7 +860,6 @@ Bot by: qu.ug.wam
         /**
          * Initializes the app on window load
          */
-        // FIX: Changed from 'DOMContentLoaded' to 'load'
         window.addEventListener('load', () => {
             // 0. Assign all DOM elements
             assignDomElements();
@@ -869,14 +869,15 @@ Bot by: qu.ug.wam
                 logMessage("FATAL: waxjs library failed to load. Check script tag.", "error");
                 return;
             }
-            if (typeof technicalindicators === 'undefined') {
-                logMessage("FATAL: technicalindicators library failed to load.", "error");
+            
+            // FIX: Check for the new 'tw' library
+            if (typeof tw === 'undefined') {
+                logMessage("FATAL: trendyways library (tw) failed to load.", "error");
                 return;
             }
-            ta_lib = window.technicalindicators;
+            // 'tw' is already globally available, no need to assign it
 
             // 1. Initialize waxjs
-            // FIX: Added tryAutoLogin: false as suggested
             wax = new waxjs.WaxJS({
                 rpcEndpoint: WAX_RPC_ENDPOINT,
                 tryAutoLogin: false
@@ -903,7 +904,6 @@ Bot by: qu.ug.wam
             });
 
             logMessage("App initialized. Please log in.", "system");
-            // FIX: Removed the log message about the CORS proxy
         
             // Set initial strategy visibility
             toggleStrategySettings();
@@ -929,7 +929,6 @@ Bot by: qu.ug.wam
          * Fetches all markets from Alcor and finds the market ID for the selected pair
          */
         async function fetchAndSetMarketId() {
-            // FIX: Added .trim() to handle whitespace
             const tokenA = tokenAContract.value.trim();
             const tokenB = tokenBContract.value.trim();
             
@@ -944,7 +943,6 @@ Bot by: qu.ug.wam
             marketStatus.textContent = "Verifying market...";
             
             try {
-                // FIX: Removed PROXY_URL and proxy headers
                 const url = `${ALCOR_API}/markets`;
                 const response = await fetch(url);
                 
@@ -1068,12 +1066,15 @@ Bot by: qu.ug.wam
                         logMessage("Not enough price data for RSI (need 14 periods).", "warn");
                         return;
                     }
+                    
+                    // FIX: Changed to use 'trendyways' library
                     // Calculate RSI
                     const closePrices = prices.map(p => p.close);
-                    const rsiInput = { values: closePrices, period: 14 };
-                    const rsiValues = ta_lib.rsi(rsiInput);
+                    // trendyways.rsi() returns an array of RSI values.
+                    const rsiValues = tw.rsi(closePrices, 14); // Simpler syntax: (data, period)
                     const currentRSI = rsiValues[rsiValues.length - 1];
                     logMessage(`Current RSI: ${currentRSI.toFixed(2)}`, "info");
+
 
                     // Check RSI Triggers
                     const buyLevel = parseFloat(rsiBuy.value);
@@ -1128,14 +1129,12 @@ Bot by: qu.ug.wam
             const from = now - (60 * parseInt(timeframe) * 200); // Get 200 periods
             const resolution = timeframe; // Alcor uses minutes
             
-            // FIX: Removed PROXY_URL
             const apiUrl = `${ALCOR_API}/charts/history?market=${marketId}&resolution=${resolution}&from=${from}&to=${now}`;
             const url = apiUrl;
 
             logMessage(`Fetching prices from Alcor (ID: ${marketId}, TF: ${timeframe}m)...`, "system");
             
             try {
-                // FIX: Removed proxy headers
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error(`API request failed with status ${response.status}.`);
@@ -1146,7 +1145,7 @@ Bot by: qu.ug.wam
                 }
                 
                 // Check if market is inverted (Price of B in terms of A)
-                const isInverted = marketConfig.baseContract === tokenBContract.value.trim(); // FIX: Added .trim()
+                const isInverted = marketConfig.baseContract === tokenBContract.value.trim();
                 if (isInverted) {
                     logMessage("Market is inverted. Inverting prices for calculation.", "system");
                     // Invert prices to get Price of A in terms of B
@@ -1182,7 +1181,6 @@ Bot by: qu.ug.wam
             logMessage(`Attempting to execute ${direction.toUpperCase()} swap...`, "system");
 
             try {
-                // FIX: Added .trim() to all config values from user input
                 const config = {
                     aSymbol: tokenASymbol.value.trim().toUpperCase(),
                     aContract: tokenAContract.value.trim(),
