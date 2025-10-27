@@ -943,7 +943,8 @@ Bot by: qu.ug.wam
             marketStatus.textContent = "Verifying market...";
             
             try {
-                const url = `${ALCOR_API}/markets`;
+                // FIX: Corrected API endpoint from /markets to /market
+                const url = `${ALCOR_API}/market`;
                 const response = await fetch(url);
                 
                 if (!response.ok) {
