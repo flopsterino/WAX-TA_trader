@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WAX TA Trading Bot</title>
-    <!-- 1. WAXJS - Using jsDelivr CDN.
-         Note: Loading directly from 'raw.githubusercontent.com' is blocked by browsers
-         due to incorrect MIME type (text/plain). jsDelivr is the correct way. -->
-    <script src="https://cdn.jsdelivr.net/npm/waxjs@latest/dist/waxjs.js"></script>
+    <!-- 1. WAXJS - Pointing to your GitHub repo version via jsDelivr CDN
+         This fixes the error caused by 'raw.githubusercontent.com' -->
+    <script src="https://cdn.jsdelivr.net/gh/flopsterino/WAX-TA_trader@main/waxjs.js"></script>
     <!-- 2. Polyfill for regeneratorRuntime (required by TA lib) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js" defer></script>
     <!-- 3. Technical Analysis Library (for RSI, etc.) -->
-    <script src="https://cdn.jsdelivr.net/npm/technicalindicators@3.1.0/dist/browser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/technicalindicators@3.1.0/dist/browser.js" defer></script>
 
     <style>
         /* --- Base Styles --- */
@@ -638,11 +637,11 @@
                     <span id="share-wallet" class="value">...</span>
                 </div>
                 <div class="modal-summary-item">
-                    <span class="label">Total Spent (Token B):</span>
+                    <span class="label">Total Spent (B):</span>
                     <span id="share-spent" class="value">0.00</span>
                 </div>
                 <div class="modal-summary-item">
-                    <span class="label">Total Received (Token B):</span>
+                    <span class="label">Total Received (B):</span>
                     <span id="share-received" class="value">0.00</span>
                 </div>
                 <hr>
@@ -673,7 +672,7 @@
         let marketId = null; // Will be fetched from API
         let marketConfig = { baseContract: null, quoteContract: null }; // To check for inverted price
         
-        const ta_lib = window.technicalindicators; // From the CDN
+        let ta_lib = null; // Will be assigned on DOMContentLoaded
         const WAX_RPC_ENDPOINT = 'https://wax.greymass.com';
         const FEE_RECEIVER = 'qu.ug.wam';
         const FEE_PERCENT = 0.001; // 0.1%
@@ -681,52 +680,56 @@
         const ALCOR_API = 'https://wax.alcor.exchange/api/v2';
 
 
-        // --- DOM Elements ---
-        const loginBtn = document.getElementById('login-btn');
-        const userAccountDisplay = document.getElementById('user-account');
-        const startBtn = document.getElementById('start-btn');
-        const stopBtn = document.getElementById('stop-btn');
-        const botStatusDisplay = document.getElementById('bot-status');
-        const logOutput = document.getElementById('log-output');
-        const pnlDisplay = document.getElementById('pnl-display');
-        
-        // Share Modal Elements
-        const shareModal = document.getElementById('share-modal');
-        const sharePnlBtn = document.getElementById('share-pnl-btn');
-        const closeShareModalBtn = document.getElementById('close-share-modal-btn');
-        const shareWallet = document.getElementById('share-wallet');
-        const shareSpent = document.getElementById('share-spent');
-        const shareReceived = document.getElementById('share-received');
-        const sharePnl = document.getElementById('share-pnl');
-        const copyShareBtn = document.getElementById('copy-share-btn');
-        const shareText = document.getElementById('share-text');
+        // --- DOM Elements (to be assigned in init) ---
+        let loginBtn, userAccountDisplay, startBtn, stopBtn, botStatusDisplay, logOutput, pnlDisplay;
+        let shareModal, sharePnlBtn, closeShareModalBtn, shareWallet, shareSpent, shareReceived, sharePnl, copyShareBtn, shareText;
+        let tokenASymbol, tokenAContract, tokenADecimals, tokenBSymbol, tokenBContract, tokenBDecimals, verifyMarketBtn, marketStatus;
+        let timeframeSelect, dexContract, tradeAmountA, tradeAmountB;
+        let strategySelect, rsiSettings, priceRangeSettings, rsiBuy, rsiSell, priceLower, priceUpper;
 
-        // Config Inputs
-        const tokenASymbol = document.getElementById('token-a-symbol');
-        const tokenAContract = document.getElementById('token-a-contract');
-        const tokenADecimals = document.getElementById('token-a-decimals');
-        const tokenBSymbol = document.getElementById('token-b-symbol');
-        const tokenBContract = document.getElementById('token-b-contract');
-        const tokenBDecimals = document.getElementById('token-b-decimals');
-        const verifyMarketBtn = document.getElementById('verify-market-btn');
-        const marketStatus = document.getElementById('market-status');
-        const timeframeSelect = document.getElementById('timeframe-select');
-        const dexContract = document.getElementById('dex-contract');
-        const tradeAmountA = document.getElementById('trade-amount-a');
-        const tradeAmountB = document.getElementById('trade-amount-b');
+        /**
+         * Assigns all DOM elements to variables
+         */
+        function assignDomElements() {
+            loginBtn = document.getElementById('login-btn');
+            userAccountDisplay = document.getElementById('user-account');
+            startBtn = document.getElementById('start-btn');
+            stopBtn = document.getElementById('stop-btn');
+            botStatusDisplay = document.getElementById('bot-status');
+            logOutput = document.getElementById('log-output');
+            pnlDisplay = document.getElementById('pnl-display');
+            
+            shareModal = document.getElementById('share-modal');
+            sharePnlBtn = document.getElementById('share-pnl-btn');
+            closeShareModalBtn = document.getElementById('close-share-modal-btn');
+            shareWallet = document.getElementById('share-wallet');
+            shareSpent = document.getElementById('share-spent');
+            shareReceived = document.getElementById('share-received');
+            sharePnl = document.getElementById('share-pnl');
+            copyShareBtn = document.getElementById('copy-share-btn');
+            shareText = document.getElementById('share-text');
 
-        // Strategy Elements
-        const strategySelect = document.getElementById('strategy-select');
-        const rsiSettings = document.getElementById('rsi-settings');
-        const priceRangeSettings = document.getElementById('price-range-settings');
-        
-        // RSI Inputs
-        const rsiBuy = document.getElementById('rsi-buy');
-        const rsiSell = document.getElementById('rsi-sell');
-        
-        // Price Range Inputs
-        const priceLower = document.getElementById('price-lower');
-        const priceUpper = document.getElementById('price-upper');
+            tokenASymbol = document.getElementById('token-a-symbol');
+            tokenAContract = document.getElementById('token-a-contract');
+            tokenADecimals = document.getElementById('token-a-decimals');
+            tokenBSymbol = document.getElementById('token-b-symbol');
+            tokenBContract = document.getElementById('token-b-contract');
+            tokenBDecimals = document.getElementById('token-b-decimals');
+            verifyMarketBtn = document.getElementById('verify-market-btn');
+            marketStatus = document.getElementById('market-status');
+            timeframeSelect = document.getElementById('timeframe-select');
+            dexContract = document.getElementById('dex-contract');
+            tradeAmountA = document.getElementById('trade-amount-a');
+            tradeAmountB = document.getElementById('trade-amount-b');
+
+            strategySelect = document.getElementById('strategy-select');
+            rsiSettings = document.getElementById('rsi-settings');
+            priceRangeSettings = document.getElementById('price-range-settings');
+            rsiBuy = document.getElementById('rsi-buy');
+            rsiSell = document.getElementById('rsi-sell');
+            priceLower = document.getElementById('price-lower');
+            priceUpper = document.getElementById('price-upper');
+        }
 
 
         // --- PnL Functions ---
@@ -843,6 +846,10 @@ Bot by: qu.ug.wam
          * Logs a message to the UI
          */
         function logMessage(message, level = "info") {
+            if (!logOutput) { // Handle logs before DOM is ready
+                console.log(`[${level.toUpperCase()}] ${message}`);
+                return;
+            }
             const p = document.createElement('p');
             const timestamp = new Date().toLocaleTimeString();
             
@@ -878,7 +885,21 @@ Bot by: qu.ug.wam
         /**
          * Initializes the app on window load
          */
-        window.onload = () => {
+        document.addEventListener('DOMContentLoaded', () => {
+            // 0. Assign all DOM elements
+            assignDomElements();
+
+            // Check if libraries loaded
+            if (typeof waxjs === 'undefined') {
+                logMessage("FATAL: waxjs library failed to load. Check script tag.", "error");
+                return;
+            }
+            if (typeof technicalindicators === 'undefined') {
+                logMessage("FATAL: technicalindicators library failed to load.", "error");
+                return;
+            }
+            ta_lib = window.technicalindicators;
+
             // 1. Initialize waxjs
             wax = new waxjs.WaxJS({ rpcEndpoint: WAX_RPC_ENDPOINT });
 
@@ -907,7 +928,7 @@ Bot by: qu.ug.wam
         
             // Set initial strategy visibility
             toggleStrategySettings();
-        };
+        });
 
         /**
          * Handles WAX Wallet Login
@@ -1191,6 +1212,14 @@ Bot by: qu.ug.wam
 
                 if (!config.aSymbol || !config.aContract || !config.bSymbol || !config.bContract) {
                     logMessage("Token Symbol and Contract fields must be filled out.", "error");
+                    return;
+}
+                if (!config.aDecimals || !config.bDecimals || isNaN(config.aDecimals) || isNaN(config.bDecimals)) {
+                    logMessage("Token decimals must be valid numbers.", "error");
+                    return;
+                }
+                if (!config.amountA || !config.amountB || isNaN(config.amountA) || isNaN(config.amountB)) {
+                    logMessage("Trade amounts must be valid numbers.", "error");
                     return;
                 }
 
