@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WAX TA Trading Bot</title>
-    <script src="https://cdn.jsdelivr.net/gh/flopsterino/WAX-TA_trader@main/waxjs.js"></script>
+    <script src="waxjs.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js"></script>
     <script src="trendyways.min.js"></script>
 
@@ -202,7 +202,6 @@
         button.secondary:hover {
             background-color: var(--border-color);
         }
-        /* Verify button styles removed as button is gone */
         button.start {
             background-color: var(--accent-green);
             color: white;
@@ -268,7 +267,6 @@
         }
         #bot-status.running { color: var(--text-green); }
         #bot-status.stopped { color: var(--text-red); }
-        /* market-status styles removed as element is gone */
 
         /* --- Log Output --- */
         #log-output {
@@ -633,7 +631,7 @@
         // --- DOM Elements (to be assigned in init) ---
         let loginBtn, userAccountDisplay, startBtn, stopBtn, botStatusDisplay, logOutput, pnlDisplay;
         let shareModal, sharePnlBtn, closeShareModalBtn, shareWallet, shareSpent, shareReceived, sharePnl, copyShareBtn, shareText;
-        let tokenASymbol, tokenAContract, tokenADecimals, tokenBSymbol, tokenBContract, tokenBDecimals; // verifyMarketBtn, marketStatus removed
+        let tokenASymbol, tokenAContract, tokenADecimals, tokenBSymbol, tokenBContract, tokenBDecimals;
         let timeframeSelect, dexContract, tradeAmountA, tradeAmountB;
         let strategySelect, rsiSettings, priceRangeSettings, rsiBuy, rsiSell, priceLower, priceUpper;
 
@@ -665,7 +663,6 @@
             tokenBSymbol = document.getElementById('token-b-symbol');
             tokenBContract = document.getElementById('token-b-contract');
             tokenBDecimals = document.getElementById('token-b-decimals');
-            // marketStatus = document.getElementById('market-status'); // Removed
             timeframeSelect = document.getElementById('timeframe-select');
             dexContract = document.getElementById('dex-contract');
             tradeAmountA = document.getElementById('trade-amount-a');
@@ -832,7 +829,7 @@ Bot by: qu.ug.wam
         }
 
         /**
-         * Initializes the app on window load - NEW ROBUST LOADER
+         * Initializes the app on window load - ROBUST LOADER
          */
         window.addEventListener('load', () => {
             // 0. Assign DOM elements first, so we can log to the UI
@@ -844,7 +841,7 @@ Bot by: qu.ug.wam
         });
 
         /**
-         * NEW: Polls until libraries are loaded, then starts the app
+         * Polls until libraries are loaded, then starts the app
          */
         function waitForLibraries() {
             let interval = setInterval(() => {
@@ -873,7 +870,7 @@ Bot by: qu.ug.wam
         }
 
         /**
-         * NEW: This function now contains all the startup logic
+         * This function now contains all the startup logic
          */
         function initializeApp() {
             // 1. Assign global libraries
@@ -1121,7 +1118,6 @@ Bot by: qu.ug.wam
                 }
             } catch (e) {
                 logMessage(`Could not check spot markets: ${e.message}`, "warn");
-After uploading `trendyways.min.js` to your GitHub repository, this code will work. This is the most stable and reliable setup for your project.
             }
             
             // 3. If nothing is found
@@ -1326,7 +1322,7 @@ After uploading `trendyways.min.js` to your GitHub repository, this code will wo
                 // --- Update PnL after successful trade ---
                 if (direction === 'buy') {
                     updatePnl('buy', config.amountB);
-                } else if (direction === 'sell') {
+                } else if (direction ===s == 'sell') {
                     // Estimate received Token B for PnL
                     if (lastPrices.length > 0) {
                         const currentPrice = lastPrices[lastPrices.length - 1].close;
