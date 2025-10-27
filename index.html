@@ -317,7 +317,7 @@
             // New listeners for token management
             addTokenBtn.addEventListener('click', openAddTokenModal);
             closeAddTokenModalBtn.addEventListener('click', closeAddTokenModal);
-            saveTokenBtn.addEventListener('click', saveNewToken);
+            saveTokenBtn.addEventListener('click', saveNewToken); // This is now an async function
             addTokenModal.addEventListener('click', (e) => { if (e.target === addTokenModal) closeAddTokenModal(); });
 
             // Update PnL display if token B is changed
@@ -430,31 +430,86 @@
         }
 
         /**
-         * Saves the new token from the modal to the list.
+         * [ --- MODIFIED: `saveNewToken` --- ]
+         * Saves the new token from the modal to the list after verifying it exists on Alcor.
          */
-        function saveNewToken() {
+        async function saveNewToken() {
             const symbol = modalTokenSymbol.value.trim().toUpperCase();
             const contract = modalTokenContract.value.trim().toLowerCase();
-            const decimals = parseInt(modalTokenDecimals.value);
+            let decimals = parseInt(modalTokenDecimals.value); // Use 'let' as it might be overwritten
 
             if (!symbol || !contract || isNaN(decimals) || decimals < 0) {
                 logMessage("Invalid token details. Please fill all fields correctly.", "error");
                 return;
             }
 
-            // Check for duplicates
+            // Check for duplicates first
             const isDuplicate = tokenList.some(token => token.symbol === symbol && token.contract === contract);
             if (isDuplicate) {
                 logMessage(`Token ${symbol}@${contract} is already in your list.`, "warn");
                 return;
             }
 
-            tokenList.push({ symbol, contract, decimals });
-            saveTokenList();
-            populateTokenDropdowns();
-            logMessage(`Added new token: ${symbol}@${contract}`, "success");
-            closeAddTokenModal();
+            // [ --- NEW: Verify token exists via Alcor API --- ]
+            // Alcor's token ID format is "symbol-contract" (e.g., "tlm-alien.worlds")
+            const tokenId = `${symbol.toLowerCase()}-${contract}`;
+            const verificationUrl = `${ALCOR_API}/tokens/${tokenId}`;
+            
+            logMessage(`Verifying token ${symbol}@${contract} with Alcor API...`, "system");
+            saveTokenBtn.disabled = true; // Disable button during check
+            saveTokenBtn.textContent = 'Verifying...';
+
+            try {
+                const response = await fetch(verificationUrl);
+
+                if (response.ok) {
+                    // HTTP 200-299: Token exists
+                    const tokenData = await response.json();
+                    
+                    // Use the verified data from the API to prevent user error
+                    const verifiedSymbol = tokenData.symbol;
+                    const verifiedContract = tokenData.contract;
+                    const verifiedDecimals = parseInt(tokenData.decimals);
+
+                    logMessage(`Verification successful: ${verifiedSymbol}@${verifiedContract}.`, "success");
+
+                    // Final duplicate check with verified data
+                     const isVerifiedDuplicate = tokenList.some(token => token.symbol === verifiedSymbol && token.contract === verifiedContract);
+                    if (isVerifiedDuplicate) {
+                         logMessage(`Token ${verifiedSymbol}@${verifiedContract} is already in your list.`, "warn");
+                         closeAddTokenModal();
+                         return;
+                    }
+
+                    tokenList.push({ 
+                        symbol: verifiedSymbol,
+                        contract: verifiedContract, 
+                        decimals: isNaN(verifiedDecimals) ? decimals : verifiedDecimals // Prefer API decimals
+                    });
+                    
+                    saveTokenList();
+                    populateTokenDropdowns();
+                    logMessage(`Added new token: ${verifiedSymbol}@${verifiedContract}`, "success");
+                    closeAddTokenModal();
+
+                } else if (response.status === 404) {
+                    // HTTP 404: Not Found
+                    logMessage(`Verification failed: Token ${symbol}@${contract} not found on Alcor.`, "error");
+                } else {
+                    // Other HTTP errors (500, 503, etc.)
+                    logMessage(`Verification failed: API returned status ${response.status} for ${symbol}@${contract}.`, "error");
+                }
+            } catch (e) {
+                // Network errors, etc.
+                logMessage(`Error during token verification: ${e.message}`, "error");
+            } finally {
+                // Re-enable the button regardless of outcome
+                saveTokenBtn.disabled = false;
+                saveTokenBtn.textContent = 'Save Token';
+            }
+            // [ --- END OF NEW CODE --- ]
         }
+
 
         /**
          * Helper function to get the full token config object from a <select> element.
@@ -669,6 +724,7 @@
 
 
         /**
+         * [ --- MODIFIED: `getCurrentPrice` --- ]
          * ROBUST: Gets current price based on market type ('swap' or 'spot').
          */
         async function getCurrentPrice(marketId, marketType) {
@@ -695,12 +751,17 @@
                     const pool = swapPools.find(p => p.id === marketId);
                     if (!pool) throw new Error(`Swap pool ${marketId} not found in list.`);
 
-                    if (typeof pool.reserveA !== 'string' || typeof pool.reserveB !== 'string') {
-                        throw new Error(`Reserve data missing or invalid format in pool object for ID ${marketId}. Cannot calculate price.`);
+                    // [ --- MODIFIED: This is the fix --- ]
+                    // The API returns reserves in 'tokenA.quantity', not 'reserveA'
+                    if (!pool.tokenA || !pool.tokenB || typeof pool.tokenA.quantity === 'undefined' || typeof pool.tokenB.quantity === 'undefined') {
+                        throw new Error(`Reserve data (tokenA/tokenB quantity) missing or invalid format in pool object for ID ${marketId}. Cannot calculate price.`);
                     }
 
-                    const reserveA = parseFloat(pool.reserveA.split(' ')[0]);
-                    const reserveB = parseFloat(pool.reserveB.split(' ')[0]);
+                    // Parse the quantity properties, which are numbers, not strings.
+                    const reserveA = parseFloat(pool.tokenA.quantity);
+                    const reserveB = parseFloat(pool.tokenB.quantity);
+                    // [ --- END OF FIX --- ]
+
 
                     if (isNaN(reserveA) || isNaN(reserveB)) {
                          throw new Error(`Parsed reserve values are invalid (NaN) for pool ID ${marketId}.`);
