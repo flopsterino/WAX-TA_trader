@@ -832,27 +832,54 @@ Bot by: qu.ug.wam
         }
 
         /**
-         * Initializes the app on window load
+         * Initializes the app on window load - NEW ROBUST LOADER
          */
         window.addEventListener('load', () => {
-            // 0. Assign all DOM elements
+            // 0. Assign DOM elements first, so we can log to the UI
             assignDomElements();
-
-            // Check if libraries loaded
-            if (typeof waxjs === 'undefined') {
-                logMessage("FATAL: waxjs library failed to load. Check script tag.", "error");
-                return;
-            }
+            logMessage("Page loaded. Waiting for required libraries...", "system");
             
-            // --- FIX: Correctly check for and assign trendyways library ---
-            if (typeof window.tw === 'undefined') {
-                logMessage("FATAL: trendyways library (tw) failed to load. Check script tag.", "error");
-                return;
-            }
-            tw = window.tw; // Assign the loaded library to our global variable
-            // --- END FIX ---
+            // 1. Start checking for libraries
+            waitForLibraries();
+        });
 
-            // 1. Initialize waxjs
+        /**
+         * NEW: Polls until libraries are loaded, then starts the app
+         */
+        function waitForLibraries() {
+            let interval = setInterval(() => {
+                if (typeof waxjs !== 'undefined' && typeof window.tw !== 'undefined') {
+                    // SUCCESS! Libraries are loaded.
+                    clearInterval(interval);
+                    logMessage("Libraries loaded successfully.", "success");
+                    initializeApp();
+                } else {
+                    // Still waiting...
+                    if (typeof waxjs === 'undefined') {
+                        logMessage("Waiting for waxjs...", "idle");
+                    }
+                    if (typeof window.tw === 'undefined') {
+                        logMessage("Waiting for trendyways (tw)...", "idle");
+                    }
+                }
+            }, 100); // Check every 100ms
+            
+             // Failsafe: Stop checking after 10 seconds
+            setTimeout(() => {
+                clearInterval(interval);
+                // Check one last time
+                if (typeof waxjs === 'undefined' || typeof window.tw === 'undefined') {
+                    logMessage("FATAL: Libraries failed to load after 10 seconds. Check script tags and CDN.", "error");
+                }
+            }, 10000);
+        }
+
+        /**
+         * NEW: This function now contains all the startup logic
+         */
+        function initializeApp() {
+            // 1. Assign global libraries
+            tw = window.tw;
             wax = new waxjs.WaxJS({
                 rpcEndpoint: WAX_RPC_ENDPOINT,
                 tryAutoLogin: false
@@ -863,9 +890,6 @@ Bot by: qu.ug.wam
 
             // 3. Add Event Listeners
             loginBtn.addEventListener('click', login);
-            
-            // Verify market button listener removed
-            
             startBtn.addEventListener('click', startBot);
             stopBtn.addEventListener('click', stopBot);
             sharePnlBtn.addEventListener('click', openShareModal);
@@ -885,7 +909,7 @@ Bot by: qu.ug.wam
         
             // Set initial strategy visibility
             toggleStrategySettings();
-        });
+        }
 
         /**
          * Handles WAX Wallet Login
@@ -903,41 +927,41 @@ Bot by: qu.ug.wam
             }
         }
 
-/**
- * Starts the trading bot
- */
-async function startBot() {
-    if (!userAccount) {
-        logMessage("Please log in before starting the bot.", "error");
-        return;
-    }
-    if (isBotRunning) return;
+        /**
+         * Starts the trading bot
+         */
+        async function startBot() {
+            if (!userAccount) {
+                logMessage("Please log in before starting the bot.", "error");
+                return;
+            }
+            if (isBotRunning) return;
 
-    // --- FIX: Reset marketId on every new start attempt ---
-    marketId = null; 
-    marketConfig = { baseContract: null, quoteContract: null };
-    // --- END FIX ---
+            // --- FIX: Reset marketId on every new start attempt ---
+            marketId = null; 
+            marketConfig = { baseContract: null, quoteContract: null };
+            // --- END FIX ---
 
-    logMessage("Bot starting... Running first check to find market.", "system");
-    
-    // Run the first logic check manually to find the market ID.
-    const successfulFirstRun = await runBotLogic();
-    
-    if (successfulFirstRun) {
-        isBotRunning = true;
-        botStatusDisplay.textContent = "RUNNING";
-        botStatusDisplay.className = "running";
-        startBtn.disabled = true;
-        stopBtn.disabled = false;
-        
-        logMessage("Bot started successfully!", "success");
-        
-        const checkInterval = parseInt(timeframeSelect.value) * 60 * 1000;
-        botInterval = setInterval(runBotLogic, Math.max(60000, checkInterval)); // At least 60s
-    } else {
-        logMessage("Bot failed to start. Check contracts and symbols.", "error");
-    }
-}
+            logMessage("Bot starting... Running first check to find market.", "system");
+            
+            // Run the first logic check manually to find the market ID.
+            const successfulFirstRun = await runBotLogic();
+            
+            if (successfulFirstRun) {
+                isBotRunning = true;
+                botStatusDisplay.textContent = "RUNNING";
+                botStatusDisplay.className = "running";
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                
+                logMessage("Bot started successfully!", "success");
+                
+                const checkInterval = parseInt(timeframeSelect.value) * 60 * 1000;
+                botInterval = setInterval(runBotLogic, Math.max(60000, checkInterval)); // At least 60s
+            } else {
+                logMessage("Bot failed to start. Check contracts and symbols.", "error");
+            }
+        }
 
         /**
          * Stops the trading bot
@@ -1285,7 +1309,7 @@ async function startBot() {
                             from: userAccount,
                             to: config.dex,
                             quantity: quantity,
-                            memo: memo,
+_memo: memo,
                         },
                     });
                     
