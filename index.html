@@ -202,23 +202,7 @@
         button.secondary:hover {
             background-color: var(--border-color);
         }
-        button.verify {
-            background-color: var(--accent-blue);
-            color: white;
-            margin-top: 1rem;
-        }
-        button.verify:hover {
-            background-color: var(--accent-blue-hover);
-        }
-        
-        /* FIX: Make verify button look disabled since it won't do anything */
-        button.verify:disabled {
-            background-color: var(--bg-tertiary);
-            color: var(--text-secondary);
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
+        /* Verify button styles removed as button is gone */
         button.start {
             background-color: var(--accent-green);
             color: white;
@@ -284,20 +268,7 @@
         }
         #bot-status.running { color: var(--text-green); }
         #bot-status.stopped { color: var(--text-red); }
-        #market-status {
-            text-align: center;
-            font-size: 0.875rem;
-            margin-top: 0.75rem;
-            padding: 0.5rem;
-            border-radius: 4px;
-            display: none; /* Hidden by default */
-        }
-        #market-status.visible {
-            display: block;
-        }
-        #market-status.success { background-color: rgba(52, 211, 153, 0.1); color: var(--text-green); }
-        #market-status.error { background-color: rgba(248, 113, 113, 0.1); color: var(--text-red); }
-        #market-status.pending { background-color: rgba(250, 204, 21, 0.1); color: var(--text-yellow); }
+        /* market-status styles removed as element is gone */
 
         /* --- Log Output --- */
         #log-output {
@@ -504,11 +475,7 @@
                 </div>
             </fieldset>
 
-            <button id="verify-market-btn" class="verify" disabled>
-                Verify Market (Disabled)
-            </button>
-            <p id="market-status"></p>
-        </div>
+            </div>
         
         <div class="app-section">
             <h2>Step 3: Define Strategy</h2>
@@ -655,7 +622,6 @@
         let marketId = null; // Will be fetched from API
         let marketConfig = { baseContract: null, quoteContract: null }; // To check for inverted price
         
-        // FIX: Changed variable name for new library
         let tw = null; // This will be our new library (trendyways)
         
         const WAX_RPC_ENDPOINT = 'https://wax.greymass.com';
@@ -667,7 +633,7 @@
         // --- DOM Elements (to be assigned in init) ---
         let loginBtn, userAccountDisplay, startBtn, stopBtn, botStatusDisplay, logOutput, pnlDisplay;
         let shareModal, sharePnlBtn, closeShareModalBtn, shareWallet, shareSpent, shareReceived, sharePnl, copyShareBtn, shareText;
-        let tokenASymbol, tokenAContract, tokenADecimals, tokenBSymbol, tokenBContract, tokenBDecimals, verifyMarketBtn, marketStatus;
+        let tokenASymbol, tokenAContract, tokenADecimals, tokenBSymbol, tokenBContract, tokenBDecimals; // verifyMarketBtn, marketStatus removed
         let timeframeSelect, dexContract, tradeAmountA, tradeAmountB;
         let strategySelect, rsiSettings, priceRangeSettings, rsiBuy, rsiSell, priceLower, priceUpper;
 
@@ -699,8 +665,8 @@
             tokenBSymbol = document.getElementById('token-b-symbol');
             tokenBContract = document.getElementById('token-b-contract');
             tokenBDecimals = document.getElementById('token-b-decimals');
-            verifyMarketBtn = document.getElementById('verify-market-btn');
-            marketStatus = document.getElementById('market-status');
+            // verifyMarketBtn = document.getElementById('verify-market-btn'); // Removed
+            // marketStatus = document.getElementById('market-status'); // Removed
             timeframeSelect = document.getElementById('timeframe-select');
             dexContract = document.getElementById('dex-contract');
             tradeAmountA = document.getElementById('trade-amount-a');
@@ -896,8 +862,7 @@ Bot by: qu.ug.wam
             // 3. Add Event Listeners
             loginBtn.addEventListener('click', login);
             
-            // FIX: Removed event listener for verifyMarketBtn
-            // verifyMarketBtn.addEventListener('click', fetchAndSetMarketId);
+            // Verify market button listener removed
             
             startBtn.addEventListener('click', startBot);
             stopBtn.addEventListener('click', stopBot);
@@ -936,16 +901,6 @@ Bot by: qu.ug.wam
             }
         }
 
-        // FIX: This function is no longer used and has been removed to avoid confusion.
-        // The bot now relies on user input and the getPriceHistory function to validate pairs.
-        /*
-        async function fetchAndSetMarketId() {
-            // This function is deprecated because it only checks for SPOT markets,
-            // not SWAP pools, which caused pairs like CHEESE/WAX to fail.
-        }
-        */
-
-
         /**
          * Starts the trading bot
          */
@@ -956,13 +911,9 @@ Bot by: qu.ug.wam
             }
             if (isBotRunning) return;
 
-            // FIX: Removed the market verification block.
-            // We will now get a marketId from the getPriceHistory function.
-            // This allows us to support SWAP-only pairs.
             logMessage("Bot starting... Running first check to find market.", "system");
             
-            // We need to find the market ID *before* setting the interval.
-            // We'll run the first logic check manually.
+            // Run the first logic check manually to find the market ID.
             const successfulFirstRun = await runBotLogic();
             
             if (successfulFirstRun) {
@@ -971,7 +922,7 @@ Bot by: qu.ug.wam
                 botStatusDisplay.className = "running";
                 startBtn.disabled = true;
                 stopBtn.disabled = false;
-                verifyMarketBtn.disabled = true; // Also disable the (now useless) verify button
+                // verifyMarketBtn.disabled = true; // Button is removed, no need to disable
                 
                 logMessage("Bot started successfully!", "success");
                 
@@ -992,13 +943,12 @@ Bot by: qu.ug.wam
             clearInterval(botInterval);
             marketId = null; // Clear the market ID
             marketConfig = { baseContract: null, quoteContract: null };
-            marketStatus.classList.remove('visible'); // Hide status
-            marketStatus.textContent = "";
+            // marketStatus element removed
             botStatusDisplay.textContent = "STOPPED";
             botStatusDisplay.className = "stopped";
             startBtn.disabled = false;
             stopBtn.disabled = true;
-            verifyMarketBtn.disabled = false; // Re-enable verify button (though it's disabled)
+            // verifyMarketBtn element removed
             logMessage("Bot stopped.", "system");
         }
 
@@ -1006,19 +956,20 @@ Bot by: qu.ug.wam
          * The main logic loop for the bot
          */
         async function runBotLogic() {
-            if (!isBotRunning && userAccount) { // Allow this to run once on start
-                logMessage("Running strategy check...", "info");
-            } else if (!isBotRunning) {
-                return false; // Don't run if not started
+            // Allow this to run once on start even if isBotRunning is false
+            if (!isBotRunning && !userAccount) {
+                 return false; // Don't run if not logged in
             }
+            
+            logMessage("Running strategy check...", "info");
 
             try {
-                // 1. Get Price History
-                // This function will now ALSO set the marketId and marketConfig
+                // 1. Get Price History (also finds marketId if needed)
                 const prices = await getPriceHistory();
                 if (!prices || prices.length < 1) {
                     logMessage("No price data available.", "warn");
-                    return false; // Return false on failure
+                    // If this was the first run (bot not running yet), it failed
+                    return isBotRunning; // Return true if bot was already running, false otherwise
                 }
                 lastPrices = prices; // Save for PnL
                 
@@ -1056,8 +1007,8 @@ Bot by: qu.ug.wam
                     const lowerBuyPrice = parseFloat(priceLower.value);
                     const upperSellPrice = parseFloat(priceUpper.value);
 
-                    if (!lowerBuyPrice || !upperSellPrice) {
-                        logMessage("Price Range: Please set a lower and upper price.", "warn");
+                    if (isNaN(lowerBuyPrice) || isNaN(upperSellPrice) || lowerBuyPrice <= 0 || upperSellPrice <= 0) {
+                        logMessage("Price Range: Please set a valid lower and upper price.", "warn");
                         return true; // Successful run, just misconfigured
                     }
 
@@ -1082,19 +1033,21 @@ Bot by: qu.ug.wam
         
         /**
          * Finds the market ID from *any* Alcor endpoint (Swap or Spot)
-         * This is a new helper function.
          */
         async function findMarketId() {
-            // If we already found it, don't search again
-            if (marketId) return marketId;
+            if (marketId) return marketId; // Return cached ID if available
             
             const tokenA = tokenAContract.value.trim();
             const tokenB = tokenBContract.value.trim();
+            if (!tokenA || !tokenB) {
+                 logMessage("Token contracts cannot be empty.", "error");
+                 return null;
+            }
             logMessage(`Searching for market ${tokenA} / ${tokenB}...`, "system");
 
-            // 1. Try the SWAP pools first (most common)
+            // 1. Try SWAP pools
             try {
-                const url = `${ALCOR_API}/swap/markets`;
+                const url = `${ALCOR_API}/swap/pools`; // Corrected endpoint
                 const response = await fetch(url);
                 if (!response.ok) throw new Error(`Swap API failed (${response.status})`);
                 
@@ -1107,17 +1060,23 @@ Bot by: qu.ug.wam
                 if (foundSwapMarket) {
                     logMessage(`Found SWAP market. ID: ${foundSwapMarket.id}`, "success");
                     marketId = foundSwapMarket.id;
-                    marketConfig.baseContract = foundSwapMarket.tokenA.contract; // For swaps, tokenA is base
-                    marketConfig.quoteContract = foundSwapMarket.tokenB.contract; // and tokenB is quote
+                    // Determine base/quote based on the order they appeared in the found market
+                    if (foundSwapMarket.tokenA.contract === tokenA) {
+                         marketConfig.baseContract = foundSwapMarket.tokenA.contract; 
+                         marketConfig.quoteContract = foundSwapMarket.tokenB.contract;
+                    } else {
+                         marketConfig.baseContract = foundSwapMarket.tokenB.contract;
+                         marketConfig.quoteContract = foundSwapMarket.tokenA.contract;
+                    }
                     return marketId;
                 }
             } catch (e) {
                 logMessage(`Could not check swap markets: ${e.message}`, "warn");
             }
 
-            // 2. Try the SPOT markets (like TLM)
+            // 2. Try SPOT markets
             try {
-                const url = `${ALCOR_API}/market`; // singular
+                const url = `${ALCOR_API}/markets`; // Corrected endpoint (plural)
                 const response = await fetch(url);
                 if (!response.ok) throw new Error(`Spot API failed (${response.status})`);
                 
@@ -1148,7 +1107,7 @@ Bot by: qu.ug.wam
          * Gets price history from Alcor API
          */
         async function getPriceHistory() {
-            // FIX: We must find the marketId first, as it's no longer done by the verify button
+            // Find marketId if we don't have it yet
             if (!marketId) {
                 const foundId = await findMarketId();
                 if (!foundId) {
@@ -1169,31 +1128,48 @@ Bot by: qu.ug.wam
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
+                    // Handle 404 specifically - might mean no history for this pair/timeframe
+                    if (response.status === 404) {
+                         logMessage(`No price history found for market ${marketId} at ${timeframe}m resolution.`, "warn");
+                         return null;
+                    }
                     throw new Error(`API request failed with status ${response.status}.`);
                 }
                 const data = await response.json();
                 if (!data || data.length === 0) {
-                    // This can happen on new/illiquid pairs
                     logMessage("No price data returned from Alcor for this timeframe.", "warn");
                     return null;
                 }
                 
                 // Check if market is inverted (Price of B in terms of A)
-                const isInverted = marketConfig.baseContract === tokenBContract.value.trim();
+                // We use Token A contract from input to check against base found by findMarketId
+                const tokenAContractInput = tokenAContract.value.trim();
+                const isInverted = marketConfig.baseContract !== tokenAContractInput; 
+                
                 if (isInverted) {
+                     // Ensure the base IS actually Token B, otherwise something is wrong
+                    if (marketConfig.baseContract !== tokenBContract.value.trim()) {
+                         logMessage(`Market config mismatch! Expected base ${tokenBContract.value.trim()} but got ${marketConfig.baseContract}. Prices might be incorrect.`, "error");
+                    }
                     logMessage("Market is inverted. Inverting prices for calculation.", "system");
                     // Invert prices to get Price of A in terms of B
                     return data.map(d => ({
                         time: d.time,
                         open: 1 / d.open,
-                        high: 1 / d.low, // In an inverse, high becomes low
-                        low: 1 / d.high, // and low becomes high
+                        high: d.low ? 1 / d.low : 0, // Handle potential division by zero if low is 0
+                        low: d.high ? 1 / d.high : 0, // Handle potential division by zero if high is 0
                         close: 1 / d.close,
                         volume: d.volume * d.close // Estimate volume in Token A
-                    })).filter(d => d.open && d.high && d.low && d.close); // Filter out any NaN/Infinity
+                    })).filter(d => d.open && d.high && d.low && d.close); // Filter out any NaN/Infinity/Zero values
+                } else {
+                     // Ensure the base IS Token A
+                    if (marketConfig.baseContract !== tokenAContractInput) {
+                        logMessage(`Market config mismatch! Expected base ${tokenAContractInput} but got ${marketConfig.baseContract}. Prices might be incorrect.`, "error");
+                    }
+                     // Market is NOT inverted (Price of A in terms of B)
                 }
                 
-                // Format data for TA library (market is not inverted)
+                // Format data (market is not inverted)
                 return data.map(d => ({
                     time: d.time,
                     open: d.open,
@@ -1204,6 +1180,8 @@ Bot by: qu.ug.wam
                 }));
             } catch (e) {
                 logMessage(`Failed to get prices: ${e.message}`, "error");
+                marketId = null; // Reset marketId if price fetch fails, to force re-search next time
+                marketConfig = { baseContract: null, quoteContract: null };
                 return null;
             }
         }
