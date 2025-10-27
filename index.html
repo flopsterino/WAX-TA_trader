@@ -665,7 +665,6 @@
             tokenBSymbol = document.getElementById('token-b-symbol');
             tokenBContract = document.getElementById('token-b-contract');
             tokenBDecimals = document.getElementById('token-b-decimals');
-            // verifyMarketBtn = document.getElementById('verify-market-btn'); // Removed
             // marketStatus = document.getElementById('market-status'); // Removed
             timeframeSelect = document.getElementById('timeframe-select');
             dexContract = document.getElementById('dex-contract');
@@ -845,10 +844,13 @@ Bot by: qu.ug.wam
                 return;
             }
             
-            if (typeof tw === 'undefined') {
-                logMessage("FATAL: trendyways library (tw) failed to load.", "error");
+            // --- FIX: Correctly check for and assign trendyways library ---
+            if (typeof window.tw === 'undefined') {
+                logMessage("FATAL: trendyways library (tw) failed to load. Check script tag.", "error");
                 return;
             }
+            tw = window.tw; // Assign the loaded library to our global variable
+            // --- END FIX ---
 
             // 1. Initialize waxjs
             wax = new waxjs.WaxJS({
@@ -901,37 +903,41 @@ Bot by: qu.ug.wam
             }
         }
 
-        /**
-         * Starts the trading bot
-         */
-        async function startBot() {
-            if (!userAccount) {
-                logMessage("Please log in before starting the bot.", "error");
-                return;
-            }
-            if (isBotRunning) return;
+/**
+ * Starts the trading bot
+ */
+async function startBot() {
+    if (!userAccount) {
+        logMessage("Please log in before starting the bot.", "error");
+        return;
+    }
+    if (isBotRunning) return;
 
-            logMessage("Bot starting... Running first check to find market.", "system");
-            
-            // Run the first logic check manually to find the market ID.
-            const successfulFirstRun = await runBotLogic();
-            
-            if (successfulFirstRun) {
-                isBotRunning = true;
-                botStatusDisplay.textContent = "RUNNING";
-                botStatusDisplay.className = "running";
-                startBtn.disabled = true;
-                stopBtn.disabled = false;
-                // verifyMarketBtn.disabled = true; // Button is removed, no need to disable
-                
-                logMessage("Bot started successfully!", "success");
-                
-                const checkInterval = parseInt(timeframeSelect.value) * 60 * 1000;
-                botInterval = setInterval(runBotLogic, Math.max(60000, checkInterval)); // At least 60s
-            } else {
-                logMessage("Bot failed to start. Check contracts and symbols.", "error");
-            }
-        }
+    // --- FIX: Reset marketId on every new start attempt ---
+    marketId = null; 
+    marketConfig = { baseContract: null, quoteContract: null };
+    // --- END FIX ---
+
+    logMessage("Bot starting... Running first check to find market.", "system");
+    
+    // Run the first logic check manually to find the market ID.
+    const successfulFirstRun = await runBotLogic();
+    
+    if (successfulFirstRun) {
+        isBotRunning = true;
+        botStatusDisplay.textContent = "RUNNING";
+        botStatusDisplay.className = "running";
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        
+        logMessage("Bot started successfully!", "success");
+        
+        const checkInterval = parseInt(timeframeSelect.value) * 60 * 1000;
+        botInterval = setInterval(runBotLogic, Math.max(60000, checkInterval)); // At least 60s
+    } else {
+        logMessage("Bot failed to start. Check contracts and symbols.", "error");
+    }
+}
 
         /**
          * Stops the trading bot
@@ -943,12 +949,10 @@ Bot by: qu.ug.wam
             clearInterval(botInterval);
             marketId = null; // Clear the market ID
             marketConfig = { baseContract: null, quoteContract: null };
-            // marketStatus element removed
             botStatusDisplay.textContent = "STOPPED";
             botStatusDisplay.className = "stopped";
             startBtn.disabled = false;
             stopBtn.disabled = true;
-            // verifyMarketBtn element removed
             logMessage("Bot stopped.", "system");
         }
 
