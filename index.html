@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WAX TA Trading Bot</title>
-    <!-- 1. WAXJS - Pointing to your GitHub repo version -->
-    <script src="https://raw.githubusercontent.com/flopsterino/WAX-TA_trader/main/waxjs.js"></script>
+    <!-- 1. WAXJS - Using jsDelivr CDN.
+         Note: Loading directly from 'raw.githubusercontent.com' is blocked by browsers
+         due to incorrect MIME type (text/plain). jsDelivr is the correct way. -->
+    <script src="https://cdn.jsdelivr.net/npm/waxjs@latest/dist/waxjs.js"></script>
     <!-- 2. Polyfill for regeneratorRuntime (required by TA lib) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js"></script>
     <!-- 3. Technical Analysis Library (for RSI, etc.) -->
