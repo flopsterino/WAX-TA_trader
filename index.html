@@ -859,7 +859,8 @@ Bot by: qu.ug.wam
         /**
          * Initializes the app on window load
          */
-        document.addEventListener('DOMContentLoaded', () => {
+        // FIX: Changed from 'DOMContentLoaded' to 'load'
+        window.addEventListener('load', () => {
             // 0. Assign all DOM elements
             assignDomElements();
 
