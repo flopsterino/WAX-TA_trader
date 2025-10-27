@@ -4,12 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WAX TA Trading Bot</title>
-    <!-- 1. WAXJS - Pointing to your GitHub repo version via jsDelivr CDN
-         This fixes the error caused by 'raw.githubusercontent.com' -->
     <script src="https://cdn.jsdelivr.net/gh/flopsterino/WAX-TA_trader@main/waxjs.js"></script>
-    <!-- 2. Polyfill for regeneratorRuntime (required by TA lib) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js" defer></script>
-    <!-- 3. Technical Analysis Library (for RSI, etc.) -->
     <script src="https://cdn.jsdelivr.net/npm/technicalindicators@3.1.0/dist/browser.js" defer></script>
 
     <style>
@@ -435,15 +431,11 @@
     <div class="container">
         <h1>WAX TA Trading Bot</h1>
 
-        <!-- CRITICAL WARNING -->
         <div class="alert alert-critical" role="alert">
             <p><strong>High Risk: Use at Your Own Risk</strong></p>
             <p>This is an educational tool. Automated trading is extremely risky and can lead to a total loss of funds. You are solely responsible for your actions. A 0.1% fee on all sell trades is sent to `qu.ug.wam`.</p>
         </div>
 
-        <!-- App Sections -->
-        
-        <!-- Step 1: Login & Status -->
         <div class="app-section">
             <h2>Step 1: Connect & Status</h2>
             <button id="login-btn" class="primary">
@@ -464,11 +456,9 @@
             </div>
         </div>
 
-        <!-- Step 2: Token Configuration -->
         <div class="app-section">
             <h2>Step 2: Configure Tokens</h2>
             
-            <!-- Token A (Your Token) -->
             <fieldset>
                 <legend>Token A (The token you want to trade)</legend>
                 <div class="form-grid form-grid-cols-3">
@@ -487,7 +477,6 @@
                 </div>
             </fieldset>
 
-            <!-- Token B (USDC) -->
             <fieldset>
                 <legend>Token B (e.g., Bridged USDC)</legend>
                 <div class="form-grid form-grid-cols-3">
@@ -506,19 +495,16 @@
                 </div>
             </fieldset>
 
-            <!-- Verify Market Button -->
             <button id="verify-market-btn" class="verify">
                 Verify Market
             </button>
             <p id="market-status"></p>
         </div>
         
-        <!-- Step 3: Strategy -->
         <div class="app-section">
             <h2>Step 3: Define Strategy</h2>
             
             <div class="form-grid form-grid-cols-2">
-                <!-- Strategy Selector -->
                 <div class="form-group">
                     <label for="strategy-select">Trading Strategy</label>
                     <select id="strategy-select">
@@ -526,7 +512,6 @@
                         <option value="price-range">Price Range Strategy</option>
                     </select>
                 </div>
-                <!-- Timeframe -->
                 <div class="form-group">
                     <label for="timeframe-select">Chart Timeframe</label>
                     <select id="timeframe-select">
@@ -541,7 +526,6 @@
                 </div>
             </div>
 
-            <!-- RSI Strategy Settings -->
             <div id="rsi-settings" class="strategy-settings form-grid form-grid-cols-2" style="margin-top: 1rem;">
                 <div class="form-group">
                     <label for="rsi-buy">
@@ -559,7 +543,6 @@
                 </div>
             </div>
 
-            <!-- Price Range Strategy Settings -->
             <div id="price-range-settings" class="strategy-settings hidden form-grid form-grid-cols-2" style="margin-top: 1rem;">
                 <div class="form-group">
                     <label for="price-lower">
@@ -575,7 +558,6 @@
                 </div>
             </div>
 
-            <!-- Common Settings: Trade Amounts -->
             <hr>
             <div class="form-grid form-grid-cols-2">
                 <div class="form-group">
@@ -588,7 +570,6 @@
                 </div>
             </div>
 
-            <!-- Common Settings: DEX Contract -->
             <div class="form-group" style="margin-top: 1rem;">
                 <label for="dex-contract">DEX Router Contract (Alcor is default)</label>
                 <input type="text" id="dex-contract" value="alcor.swap">
@@ -598,7 +579,6 @@
             </div>
         </div>
 
-        <!-- Step 4: Control Panel -->
         <div class="app-section">
             <h2>Step 4: Control Panel</h2>
             <div class="button-grid">
@@ -615,7 +595,6 @@
             </div>
         </div>
 
-        <!-- Step 5: Log -->
         <div class="app-section">
             <h2>Bot Log</h2>
             <div id="log-output">
@@ -623,10 +602,7 @@
             </div>
         </div>
 
-    </div> <!-- End .container -->
-
-    <!-- PnL Share Modal -->
-    <div id="share-modal" class="modal-overlay">
+    </div> <div id="share-modal" class="modal-overlay">
         <div class="modal-content">
             <button id="close-share-modal-btn" class="modal-close-btn">&times;</button>
             <h2>My Trading Bot PnL</h2>
@@ -651,15 +627,13 @@
                 </div>
             </div>
 
-            <textarea id="share-text"></textarea> <!-- No longer hidden -->
-            <button id="copy-share-btn">
+            <textarea id="share-text"></textarea> <button id="copy-share-btn">
                 Copy Sharable Text
             </button>
         </div>
     </div>
 
 
-    <!-- Main Application Logic -->
     <script>
         // --- Global Variables ---
         let wax;
@@ -676,7 +650,7 @@
         const WAX_RPC_ENDPOINT = 'https://wax.greymass.com';
         const FEE_RECEIVER = 'qu.ug.wam';
         const FEE_PERCENT = 0.001; // 0.1%
-        const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+        // FIX: PROXY_URL constant removed
         const ALCOR_API = 'https://wax.alcor.exchange/api/v2';
 
 
@@ -776,7 +750,7 @@
          */
         function updatePnlDisplay() {
             const pnlValue = pnlData.pnl || 0;
-            const tokenSymbol = tokenBSymbol.value || 'Token B';
+            const tokenSymbol = tokenBSymbol.value.trim().toUpperCase() || 'Token B';
             
             pnlDisplay.textContent = `${pnlValue.toFixed(4)} ${tokenSymbol}`;
             if (pnlValue > 0) {
@@ -791,7 +765,7 @@
         // --- Share Modal Functions ---
         
         function openShareModal() {
-            const tokenSymbol = tokenBSymbol.value || 'Token B';
+            const tokenSymbol = tokenBSymbol.value.trim().toUpperCase() || 'Token B';
             const pnlValue = pnlData.pnl || 0;
             
             // Update modal content
@@ -901,7 +875,11 @@ Bot by: qu.ug.wam
             ta_lib = window.technicalindicators;
 
             // 1. Initialize waxjs
-            wax = new waxjs.WaxJS({ rpcEndpoint: WAX_RPC_ENDPOINT });
+            // FIX: Added tryAutoLogin: false as suggested
+            wax = new waxjs.WaxJS({
+                rpcEndpoint: WAX_RPC_ENDPOINT,
+                tryAutoLogin: false
+            });
 
             // 2. Load PnL from storage
             loadPnlFromStorage();
@@ -924,7 +902,7 @@ Bot by: qu.ug.wam
             });
 
             logMessage("App initialized. Please log in.", "system");
-            logMessage("Using CORS proxy for price data. If prices fail, you may need to visit 'https://cors-anywhere.herokuapp.com/' and request access.", "warn");
+            // FIX: Removed the log message about the CORS proxy
         
             // Set initial strategy visibility
             toggleStrategySettings();
@@ -942,7 +920,7 @@ Bot by: qu.ug.wam
                 loginBtn.textContent = "Logged In";
                 logMessage(`Logged in as: ${userAccount}`, "success");
             } catch (e) {
-                logMessage(e.message, "error");
+                logMessage(`Login failed: ${e.message}`, "error");
             }
         }
 
@@ -950,8 +928,10 @@ Bot by: qu.ug.wam
          * Fetches all markets from Alcor and finds the market ID for the selected pair
          */
         async function fetchAndSetMarketId() {
-            const tokenA = tokenAContract.value;
-            const tokenB = tokenBContract.value;
+            // FIX: Added .trim() to handle whitespace
+            const tokenA = tokenAContract.value.trim();
+            const tokenB = tokenBContract.value.trim();
+            
             if (!tokenA || !tokenB) {
                 logMessage("Token A and Token B contracts must be filled.", "error");
                 return false;
@@ -963,11 +943,12 @@ Bot by: qu.ug.wam
             marketStatus.textContent = "Verifying market...";
             
             try {
-                const url = PROXY_URL + `${ALCOR_API}/markets`;
-                const response = await fetch(url, { headers: { 'x-requested-with': 'XMLHttpRequest' } });
+                // FIX: Removed PROXY_URL and proxy headers
+                const url = `${ALCOR_API}/markets`;
+                const response = await fetch(url);
                 
                 if (!response.ok) {
-                    throw new Error(`API request failed with status ${response.status}. Proxy access may be required.`);
+                    throw new Error(`API request failed with status ${response.status}.`);
                 }
                 
                 const markets = await response.json();
@@ -1078,7 +1059,7 @@ Bot by: qu.ug.wam
                 const selectedStrategy = strategySelect.value;
                 // Prices are now always "Price of Token A in terms of Token B"
                 const currentPrice = prices[prices.length - 1].close; 
-                logMessage(`Current price: 1 ${tokenASymbol.value} = ${currentPrice.toFixed(8)} ${tokenBSymbol.value}`, "info");
+                logMessage(`Current price: 1 ${tokenASymbol.value.trim().toUpperCase()} = ${currentPrice.toFixed(8)} ${tokenBSymbol.value.trim().toUpperCase()}`, "info");
 
                 // 3. Run selected strategy
                 if (selectedStrategy === 'rsi') {
@@ -1146,15 +1127,17 @@ Bot by: qu.ug.wam
             const from = now - (60 * parseInt(timeframe) * 200); // Get 200 periods
             const resolution = timeframe; // Alcor uses minutes
             
+            // FIX: Removed PROXY_URL
             const apiUrl = `${ALCOR_API}/charts/history?market=${marketId}&resolution=${resolution}&from=${from}&to=${now}`;
-            const url = PROXY_URL + apiUrl;
+            const url = apiUrl;
 
             logMessage(`Fetching prices from Alcor (ID: ${marketId}, TF: ${timeframe}m)...`, "system");
             
             try {
-                const response = await fetch(url, { headers: { 'x-requested-with': 'XMLHttpRequest' } });
+                // FIX: Removed proxy headers
+                const response = await fetch(url);
                 if (!response.ok) {
-                    throw new Error(`API request failed with status ${response.status}. Proxy access may be required.`);
+                    throw new Error(`API request failed with status ${response.status}.`);
                 }
                 const data = await response.json();
                 if (!data || data.length === 0) {
@@ -1162,7 +1145,7 @@ Bot by: qu.ug.wam
                 }
                 
                 // Check if market is inverted (Price of B in terms of A)
-                const isInverted = marketConfig.baseContract === tokenBContract.value;
+                const isInverted = marketConfig.baseContract === tokenBContract.value.trim(); // FIX: Added .trim()
                 if (isInverted) {
                     logMessage("Market is inverted. Inverting prices for calculation.", "system");
                     // Invert prices to get Price of A in terms of B
@@ -1198,14 +1181,15 @@ Bot by: qu.ug.wam
             logMessage(`Attempting to execute ${direction.toUpperCase()} swap...`, "system");
 
             try {
+                // FIX: Added .trim() to all config values from user input
                 const config = {
-                    aSymbol: tokenASymbol.value.toUpperCase(),
-                    aContract: tokenAContract.value,
+                    aSymbol: tokenASymbol.value.trim().toUpperCase(),
+                    aContract: tokenAContract.value.trim(),
                     aDecimals: parseInt(tokenADecimals.value),
-                    bSymbol: tokenBSymbol.value.toUpperCase(),
-                    bContract: tokenBContract.value,
+                    bSymbol: tokenBSymbol.value.trim().toUpperCase(),
+                    bContract: tokenBContract.value.trim(),
                     bDecimals: parseInt(tokenBDecimals.value),
-                    dex: dexContract.value,
+                    dex: dexContract.value.trim(),
                     amountA: parseFloat(tradeAmountA.value),
                     amountB: parseFloat(tradeAmountB.value)
                 };
@@ -1213,13 +1197,13 @@ Bot by: qu.ug.wam
                 if (!config.aSymbol || !config.aContract || !config.bSymbol || !config.bContract) {
                     logMessage("Token Symbol and Contract fields must be filled out.", "error");
                     return;
-}
-                if (!config.aDecimals || !config.bDecimals || isNaN(config.aDecimals) || isNaN(config.bDecimals)) {
+                }
+                if (isNaN(config.aDecimals) || isNaN(config.bDecimals)) {
                     logMessage("Token decimals must be valid numbers.", "error");
                     return;
                 }
-                if (!config.amountA || !config.amountB || isNaN(config.amountA) || isNaN(config.amountB)) {
-                    logMessage("Trade amounts must be valid numbers.", "error");
+                if (isNaN(config.amountA) || isNaN(config.amountB) || config.amountA <= 0 || config.amountB <= 0) {
+                    logMessage("Trade amounts must be valid, positive numbers.", "error");
                     return;
                 }
 
@@ -1306,19 +1290,34 @@ Bot by: qu.ug.wam
                     updatePnl('buy', config.amountB);
                 } else if (direction === 'sell') {
                     // Estimate received Token B for PnL
-                    const currentPrice = lastPrices[lastPrices.length - 1].close;
-                    const userAmountSold = config.amountA * (1 - FEE_PERCENT);
-                    const estimatedReceivedB = userAmountSold * currentPrice;
-                    
-                    logMessage(`Est. ${estimatedReceivedB.toFixed(config.bDecimals)} ${config.bSymbol} received.`, "info");
-                    updatePnl('sell', estimatedReceivedB);
+                    if (lastPrices.length > 0) {
+                        const currentPrice = lastPrices[lastPrices.length - 1].close;
+                        const userAmountSold = config.amountA * (1 - FEE_PERCENT);
+                        const estimatedReceivedB = userAmountSold * currentPrice;
+                        
+                        logMessage(`Est. ${estimatedReceivedB.toFixed(config.bDecimals)} ${config.bSymbol} received.`, "info");
+                        updatePnl('sell', estimatedReceivedB);
+                    } else {
+                         logMessage(`Could not estimate PnL for sell trade, no price data available.`, "warn");
+                    }
                 }
 
             } catch (e) {
-                logMessage(`Swap failed: ${e.message}`, "error");
+                // Try to parse a more specific error from WAX
+                let errorMessage = e.message;
+                try {
+                    const errorJson = JSON.parse(e.message);
+                    if (errorJson.error && errorJson.error.details && errorJson.error.details.length > 0) {
+                        errorMessage = errorJson.error.details[0].message;
+                    } else if (errorJson.error && errorJson.error.what) {
+                        errorMessage = errorJson.error.what;
+                    }
+                } catch (parseError) {
+                    // It wasn't JSON, just use the original message
+                }
+                logMessage(`Swap failed: ${errorMessage}`, "error");
             }
         }
     </script>
 </body>
 </html>
-
